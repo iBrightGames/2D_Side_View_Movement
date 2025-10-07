@@ -65,17 +65,11 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\InputMovementMapping.cs" />
-    <Compile Include="Assets\Scripts\MovementStateRegistry.cs" />
-    <Compile Include="Assets\Demo\Scripts\MovementController.cs" />
-    <Compile Include="Assets\Scripts\MovementExacuter.cs" />
-    <Compile Include="Assets\Scripts\StateMachine.cs" />
-    <Compile Include="Assets\Demo\Scripts\PlayerControl.cs" />
-    <Compile Include="Assets\Scripts\InputSO.cs" />
+    <Compile Include="Assets\Scripts\MovementController.cs" />
+    <Compile Include="Assets\Scripts\InputMovementHandler.cs" />
     <Compile Include="Assets\Scripts\InputSystem Integration.cs" />
-    <Compile Include="Assets\Scripts\MovementCofigSO.cs" />
     <Compile Include="Assets\InputSystem_Actions.cs" />
-    <Compile Include="Assets\Scripts\MovementData.cs" />
+    <Compile Include="Assets\Scripts\MovementExecuter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
