@@ -1,11 +1,26 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
+using System.Collections;
 
+#region Input Movement Handler
 
 public class InputMovementHandler : MonoBehaviour
 {
     [SerializeField] private InputMovementBridge[] inputMovementBridges;
     private MovementController movementController;
+
+    // Track active coroutines for triggered movements
+    private System.Collections.Generic.Dictionary<MovementForceSO, Coroutine> activeTriggeredMovements 
+        = new System.Collections.Generic.Dictionary<MovementForceSO, Coroutine>();
+
+    // Track continuous movements
+    private System.Collections.Generic.Dictionary<MovementForceSO, float> continuousMovementTimers 
+        = new System.Collections.Generic.Dictionary<MovementForceSO, float>();
+
+    // Track charged movements
+    private System.Collections.Generic.Dictionary<MovementForceSO, float> chargeTimers 
+        = new System.Collections.Generic.Dictionary<MovementForceSO, float>();
 
     private void Awake()
     {
@@ -14,55 +29,178 @@ public class InputMovementHandler : MonoBehaviour
 
     private void Update()
     {
-        foreach (var b in inputMovementBridges)
+        foreach (var bridge in inputMovementBridges)
         {
-            if (b.baseInputSO is not ExternalInputSO ext)
-                continue;
+            if (bridge.baseInputSO == null || bridge.movementSO == null) continue;
 
-            var action = ext.inputAction.action;
+            ProcessBridge(bridge);
+        }
+    }
 
-            switch (action.type)
+    private void ProcessBridge(InputMovementBridge bridge)
+    {
+        BaseInputSO input = bridge.baseInputSO;
+        MovementForceSO movement = bridge.movementSO;
+
+        Vector3 inputDirection = Vector3.zero;
+        if (input is ExternalInputSO externalInput)
+        {
+            inputDirection = externalInput.GetInputDirection();
+        }
+
+        switch (movement.ExecutionType)
+        {
+            case MovementExecutionType.Continuous:
+                HandleContinuousMovement(bridge, input, movement, inputDirection);
+                break;
+
+            case MovementExecutionType.Triggered:
+                HandleTriggeredMovement(bridge, input, movement, inputDirection);
+                break;
+
+            case MovementExecutionType.Charged:
+                HandleChargedMovement(bridge, input, movement, inputDirection);
+                break;
+        }
+    }
+
+    private void HandleContinuousMovement(InputMovementBridge bridge, BaseInputSO input, 
+                                          MovementForceSO movement, Vector3 inputDirection)
+    {
+        bool isHeld = input.IsHeld();
+
+        if (isHeld)
+        {
+            // Check max duration for continuous movements
+            float maxDuration = 0f;
+            if (movement is ContinuousRigidbodyMovement cRb) maxDuration = cRb.MaxDuration;
+            else if (movement is ContinuousTransformMovement cTr) maxDuration = cTr.MaxDuration;
+
+            if (maxDuration > 0)
             {
-                case InputActionType.Value:
-                    HandleValueInput(b, action);
-                    break;
+                if (!continuousMovementTimers.ContainsKey(movement))
+                {
+                    continuousMovementTimers[movement] = 0f;
+                }
 
-                case InputActionType.Button:
-                    HandleButtonInput(b, action);
-                    break;
+                continuousMovementTimers[movement] += Time.deltaTime;
+
+                if (continuousMovementTimers[movement] >= maxDuration)
+                {
+                    return; // Max duration reached
+                }
+            }
+
+            movementController.ApplyForce(movement, inputDirection);
+        }
+        else
+        {
+            // Reset timer when not held
+            if (continuousMovementTimers.ContainsKey(movement))
+            {
+                continuousMovementTimers.Remove(movement);
             }
         }
     }
 
-    private void HandleValueInput(InputMovementBridge bridge, InputAction action)
+    private void HandleTriggeredMovement(InputMovementBridge bridge, BaseInputSO input, 
+                                         MovementForceSO movement, Vector3 inputDirection)
     {
-        // Vector2 veya float olabilir, kontrol et
-        if (action.expectedControlType == "Vector2")
+        // Check if already executing
+        bool isBlocked = activeTriggeredMovements.ContainsKey(movement);
+        
+        bool shouldBlock = false;
+        if (movement is TriggeredRigidbodyMovement tRb) shouldBlock = tRb.BlockUntilComplete;
+        else if (movement is TriggeredTransformMovement tTr) shouldBlock = tTr.BlockUntilComplete;
+
+        if (isBlocked && shouldBlock) return;
+
+        if (input.ShouldExecute())
         {
-            Vector2 input = action.ReadValue<Vector2>();
-            if (input.sqrMagnitude > 0.001f)
+            Coroutine coroutine = null;
+
+            if (movement is TriggeredRigidbodyMovement trigRb)
             {
-                // input yönü ile kuvveti çarp
-                Vector3 dir = new Vector3(input.x, 0, input.y);
-                movementController.ApplyForce(bridge.movementSO);
+                coroutine = movementController.StartTriggeredMovement(trigRb, inputDirection);
             }
-        }
-        else // float tipi continuous inputlar
-        {
-            float input = action.ReadValue<float>();
-            if (input > 0)
+            else if (movement is TriggeredTransformMovement trigTr)
             {
-                movementController.ApplyForce(bridge.movementSO);
+                coroutine = movementController.StartTriggeredMovement(trigTr, inputDirection);
+            }
+
+            if (coroutine != null)
+            {
+                activeTriggeredMovements[movement] = coroutine;
+                StartCoroutine(CleanupTriggeredMovement(movement, coroutine));
             }
         }
     }
 
-    private void HandleButtonInput(InputMovementBridge bridge, InputAction action)
+    private IEnumerator CleanupTriggeredMovement(MovementForceSO movement, Coroutine coroutine)
     {
-        if (action.triggered)
+        yield return coroutine;
+        activeTriggeredMovements.Remove(movement);
+    }
+
+    private void HandleChargedMovement(InputMovementBridge bridge, BaseInputSO input, 
+                                       MovementForceSO movement, Vector3 inputDirection)
+    {
+        bool isHeld = input.IsHeld();
+        bool wasHeld = chargeTimers.ContainsKey(movement);
+
+        if (isHeld)
         {
-            movementController.ApplyForce(bridge.movementSO);
+            // Charging
+            if (!chargeTimers.ContainsKey(movement))
+            {
+                chargeTimers[movement] = 0f;
+            }
+
+            float maxCharge = 0f;
+            if (movement is ChargedRigidbodyMovement chRb) maxCharge = chRb.MaxChargeTime;
+            else if (movement is ChargedTransformMovement chTr) maxCharge = chTr.MaxChargeTime;
+
+            chargeTimers[movement] = Mathf.Min(chargeTimers[movement] + Time.deltaTime, maxCharge);
+        }
+        else if (wasHeld)
+        {
+            // Released - Execute charged movement
+            float chargeTime = chargeTimers[movement];
+            float minCharge = 0f, maxCharge = 1f, multiplier = 1f;
+
+            if (movement is ChargedRigidbodyMovement chRb)
+            {
+                minCharge = chRb.MinChargeTime;
+                maxCharge = chRb.MaxChargeTime;
+                multiplier = chRb.ChargeMultiplier;
+            }
+            else if (movement is ChargedTransformMovement chTr)
+            {
+                minCharge = chTr.MinChargeTime;
+                maxCharge = chTr.MaxChargeTime;
+                multiplier = chTr.ChargeMultiplier;
+            }
+
+            if (chargeTime >= minCharge)
+            {
+                float chargePercent = Mathf.Clamp01((chargeTime - minCharge) / (maxCharge - minCharge));
+                float forceMult = 1f + (chargePercent * multiplier);
+                
+                Vector3 chargedDirection = inputDirection * forceMult;
+                if (chargedDirection.sqrMagnitude < 0.001f)
+                {
+                    chargedDirection = movement.Direction * forceMult;
+                }
+
+                movementController.ApplyForce(movement, chargedDirection);
+            }
+
+            chargeTimers.Remove(movement);
         }
     }
 }
+
+#endregion
+
+
 

@@ -630,8 +630,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputMovementBridges:
   - movementSO: {fileID: 11400000, guid: 0053dfb046f883b498b7eabd51937216, type: 2}
-    baseInputSO: {fileID: 11400000, guid: 47f55a32d82e9d24f89814a1558d9196, type: 2}
-  - movementSO: {fileID: 0}
     baseInputSO: {fileID: 0}
 --- !u!114 &1633897201
 MonoBehaviour:
