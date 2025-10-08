@@ -629,8 +629,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputMovementBridges:
-  - movementSO: {fileID: 11400000, guid: 0053dfb046f883b498b7eabd51937216, type: 2}
-    baseInputSO: {fileID: 0}
+  - movementSO: {fileID: 11400000, guid: c5ea0cd8d31bd82468b8d846f0f265f9, type: 2}
+    baseInputSO: {fileID: 11400000, guid: d9762d8a56b0ea64ba5938908abcf1e9, type: 2}
+  - movementSO: {fileID: 11400000, guid: 190a2c2c4ac192c4f91cf0dd38f07a14, type: 2}
+    baseInputSO: {fileID: 11400000, guid: d9762d8a56b0ea64ba5938908abcf1e9, type: 2}
 --- !u!114 &1633897201
 MonoBehaviour:
   m_ObjectHideFlags: 0
