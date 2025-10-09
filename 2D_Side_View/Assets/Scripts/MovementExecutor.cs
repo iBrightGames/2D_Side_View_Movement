@@ -22,13 +22,7 @@ public static class MovementExecutor
             }
         }
 
-        switch(force)
-        {
-            case ContinuosRigidbodyMovement || TriggeredRigidbodyMovement ||ChargedRigidbodyMovement:
-            ApplyRigidbody2D ();
-            break;
 
-        }
     }
 
     private static void ApplyTransform(ForceType forceType, Vector3 direction, Transform t)

@@ -47,30 +47,30 @@ public class MovementController : MonoBehaviour
         MovementExecutor.ApplyForce(force, inputDirection, allModifiers.ToArray(), trans, rb2D);
     }
     
-    public void PlayFeedback(MovementFeedbackConfig feedback)
-    {
-        // Animation
-        if (animator != null && !string.IsNullOrEmpty(feedback.animationTrigger))
-            animator.SetTrigger(feedback.animationTrigger);
+    // public void PlayFeedback(MovementFeedbackConfig feedback)
+    // {
+    //     // Animation
+    //     if (animator != null && !string.IsNullOrEmpty(feedback.animationTrigger))
+    //         animator.SetTrigger(feedback.animationTrigger);
         
-        // Audio
-        if (audioSource != null && feedback.startSound != null)
-            audioSource.PlayOneShot(feedback.startSound, feedback.volume);
+    //     // Audio
+    //     if (audioSource != null && feedback.startSound != null)
+    //         audioSource.PlayOneShot(feedback.startSound, feedback.volume);
         
-        // VFX
-        if (feedback.startVFX != null)
-        {
-            Vector3 spawnPos = feedback.attachVFXToTransform ? transform.position : feedback.startVFX.transform.position;
-            Instantiate(feedback.startVFX, spawnPos, Quaternion.identity, feedback.attachVFXToTransform ? transform : null);
-        }
+    //     // VFX
+    //     if (feedback.startVFX != null)
+    //     {
+    //         Vector3 spawnPos = feedback.attachVFXToTransform ? transform.position : feedback.startVFX.transform.position;
+    //         Instantiate(feedback.startVFX, spawnPos, Quaternion.identity, feedback.attachVFXToTransform ? transform : null);
+    //     }
         
-        // Camera shake (if you have a camera shake system)
-        if (feedback.enableCameraShake)
-        {
-            // Call your camera shake here
-            // CameraShake.Instance?.Shake(feedback.shakeIntensity, feedback.shakeDuration);
-        }
-    }
+    //     // Camera shake (if you have a camera shake system)
+    //     if (feedback.enableCameraShake)
+    //     {
+    //         // Call your camera shake here
+    //         // CameraShake.Instance?.Shake(feedback.shakeIntensity, feedback.shakeDuration);
+    //     }
+    // }
     
     public Vector2 GetVelocity()
     {

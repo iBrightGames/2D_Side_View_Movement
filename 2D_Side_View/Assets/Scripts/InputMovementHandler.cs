@@ -64,7 +64,7 @@ public class InputMovementHandler : MonoBehaviour
             {
                 bridge.isExecuting = true;
                 movementController.OnMovementStarted?.Invoke();
-                movementController.PlayFeedback(bridge.feedback);
+                // movementController.PlayFeedback(bridge.feedback);
             }
             
             movementController.ApplyForce(movement, inputDir, bridge.modifiers);
@@ -91,7 +91,7 @@ public class InputMovementHandler : MonoBehaviour
             input.ClearBuffer();
             
             movementController.OnMovementStarted?.Invoke();
-            movementController.PlayFeedback(bridge.feedback);
+            // movementController.PlayFeedback(bridge.feedback);
             movementController.ApplyForce(movement, inputDir, bridge.modifiers);
             
             // For triggered movements, mark as complete after a frame
@@ -129,7 +129,7 @@ public class InputMovementHandler : MonoBehaviour
             Vector3 chargedDir = inputDir * (1f + chargeTime);
             
             bridge.MarkExecuted();
-            movementController.PlayFeedback(bridge.feedback);
+            // movementController.PlayFeedback(bridge.feedback);
             movementController.ApplyForce(movement, chargedDir, bridge.modifiers);
             movementController.OnMovementCompleted?.Invoke();
         }

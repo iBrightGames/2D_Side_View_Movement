@@ -1,21 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Events;
-using System.Collections;
-using System.Collections.Generic;
 
 #region Input System
 
 public abstract class BaseInputSO : ScriptableObject
-{
-    [Header("Input Info")]
-    public string inputName = "Unnamed Input";
-    
+{    
     [Header("Input Buffer")]
     [Tooltip("Store input for this duration if can't execute immediately")]
     [Range(0f, 0.5f)]
     public float bufferWindow = 0.15f;
-    
     [System.NonSerialized] protected float bufferedInputTime = -1f;
     
     public abstract bool ShouldExecute();
@@ -36,6 +29,13 @@ public abstract class BaseInputSO : ScriptableObject
     {
         bufferedInputTime = -1f;
     }
+    // Helper methods
+    public abstract void Trigger();
+    public abstract void Activate();
+    public abstract void Deactivate();
+    public abstract void Toggle();
+
+    public abstract Vector3 GetDirection();
 }
 
 [CreateAssetMenu(fileName = "ExternalInput", menuName = "Movement/Input/External Input")]
@@ -111,11 +111,38 @@ public class ExternalInputSO : BaseInputSO
             return new Vector3(input, 0, 0);
         }
     }
-    
-    public float GetInputMagnitude()
+
+    public float GetInputMagnitude()=>GetInputDirection().magnitude;
+
+    public override void Trigger()
     {
-        return GetInputDirection().magnitude;
+        throw new System.NotImplementedException();
     }
+
+    public override void Activate()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Deactivate()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Toggle()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override Vector3 GetDirection()
+    {
+        throw new System.NotImplementedException();
+    }
+
+
+
+    // Helper methods
+
 }
 
 [CreateAssetMenu(fileName = "InternalInput", menuName = "Movement/Input/Internal Input")]
@@ -128,8 +155,6 @@ public class InternalInputSO : BaseInputSO
     [Tooltip("For one-shot execution (auto-resets)")]
     public bool triggerOnce = false;
     
-    [Header("AI Direction (Optional)")]
-    public Vector3 scriptedDirection = Vector3.zero;
     
     public override bool ShouldExecute()
     {
@@ -141,25 +166,22 @@ public class InternalInputSO : BaseInputSO
         }
         return isActive;
     }
-    
-    public override bool IsHeld()
-    {
-        return isActive;
-    }
-    
-    public override bool WasReleasedThisFrame()
-    {
-        return false;
-    }
+
+    public override bool IsHeld() => isActive;
+
+
+    public override bool WasReleasedThisFrame() => false;
     
     // Helper methods
-    public void Trigger() => triggerOnce = true;
-    public void Activate() => isActive = true;
-    public void Deactivate() => isActive = false;
-    public void Toggle() => isActive = !isActive;
-    
-    public Vector3 GetDirection() => scriptedDirection;
-    public void SetDirection(Vector3 dir) => scriptedDirection = dir;
+    public override void Trigger() => triggerOnce = true;
+    public override void Activate() => isActive = true;
+    public override void Deactivate() => isActive = false;
+    public override void Toggle() => isActive = !isActive;
+
+    public override Vector3 GetDirection()
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
 #endregion
