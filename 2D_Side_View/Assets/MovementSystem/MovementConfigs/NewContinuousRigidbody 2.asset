@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: NewContinuousRigidbody 2
   m_EditorClassIdentifier: Assembly-CSharp::ContinuousRigidbodyMovement
-  forceType: 0
-  direction: {x: 0, y: 0, z: 0}
+  forceType: 1
+  direction: {x: 0, y: 1, z: 0}
   useInputDirection: 0
   forceMode2D: 0
   maxDuration: 0

@@ -2,126 +2,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using System.Collections;
+using System.Collections.Generic;
 
-#region Input System
 
-[System.Serializable]
-public class InputMovementBridge
-{
-    public MovementForceSO movementSO;
-    public BaseInputSO baseInputSO;
-}
 
-public abstract class BaseInputSO : ScriptableObject
-{
-    public abstract bool ShouldExecute();
-    public abstract bool IsHeld();
-}
-
-[CreateAssetMenu(fileName = "NewExternalInputSO", menuName = "Movement/Input/ExternalInputSO")]
-public class ExternalInputSO : BaseInputSO
-{
-    public InputActionReference inputAction;
-
-    public override bool ShouldExecute()
-    {
-        if (inputAction == null || inputAction.action == null) return false;
-        
-        var action = inputAction.action;
-        
-        switch (action.type)
-        {
-            case InputActionType.Button:
-                return action.triggered;
-            
-            case InputActionType.Value:
-                if (action.expectedControlType == "Vector2")
-                {
-                    return action.ReadValue<Vector2>().sqrMagnitude > 0.001f;
-                }
-                return Mathf.Abs(action.ReadValue<float>()) > 0.001f;
-            
-            default:
-                return false;
-        }
-    }
-
-    public override bool IsHeld()
-    {
-        if (inputAction == null || inputAction.action == null) return false;
-        
-        var action = inputAction.action;
-        return action.phase == InputActionPhase.Performed || action.phase == InputActionPhase.Started;
-    }
-
-    public Vector3 GetInputDirection()
-    {
-        if (inputAction == null || inputAction.action == null) return Vector3.zero;
-        
-        var action = inputAction.action;
-        
-        if (action.expectedControlType == "Vector2")
-        {
-            Vector2 input = action.ReadValue<Vector2>();
-            return new Vector3(input.x, 0, input.y);
-        }
-        else
-        {
-            float input = action.ReadValue<float>();
-            return new Vector3(input, 0, 0);
-        }
-    }
-}
-
-[CreateAssetMenu(fileName = "NewInternalInputSO", menuName = "Movement/Input/InternalInputSO")]
-public class InternalInputSO : BaseInputSO
-{
-    [Header("Runtime Control")]
-    [Tooltip("Toggle this bool from scripts to control movement")]
-    public bool IsActive = false;
-    
-    [Header("Trigger Control")]
-    [Tooltip("Set this to true from code to trigger once, then automatically resets")]
-    public bool TriggerOnce = false;
-
-    public override bool ShouldExecute()
-    {
-        if (TriggerOnce)
-        {
-            TriggerOnce = false; // Auto-reset
-            return true;
-        }
-        return IsActive;
-    }
-
-    public override bool IsHeld()
-    {
-        return IsActive;
-    }
-
-    // Helper method for external scripts
-    public void Trigger()
-    {
-        TriggerOnce = true;
-    }
-
-    public void Activate()
-    {
-        IsActive = true;
-    }
-
-    public void Deactivate()
-    {
-        IsActive = false;
-    }
-}
-
-#endregion
-
-#region Movement Force ScriptableObjects
+#region Movement Forces (Abbreviated - use your existing ones)
 
 public enum ForceType { Linear, Angular, Scaler }
-public enum CompletionType { None, Time, Rotation, Distance, Condition }
+public enum CompletionType { None, Time, Rotation, Distance }
+public enum MovementExecutionType { Continuous, Triggered, Charged }
 
 public abstract class MovementForceSO : ScriptableObject
 {
@@ -130,22 +19,16 @@ public abstract class MovementForceSO : ScriptableObject
     [SerializeField] protected Vector3 direction;
     
     [Header("Input Control")]
-    [Tooltip("If true, uses input direction instead of configured direction")]
+    [Tooltip("Use input direction instead of configured direction")]
     [SerializeField] protected bool useInputDirection = false;
-
+    
     public ForceType ForceType => forceType;
     public Vector3 Direction => direction;
     public bool UseInputDirection => useInputDirection;
-
+    
     public abstract MovementExecutionType ExecutionType { get; }
 }
 
-public enum MovementExecutionType
-{
-    Continuous,  // Executes while input is held
-    Triggered,   // Executes once to completion
-    Charged      // Hold to charge, release to execute
-}
 
 // ============= RIGIDBODY MOVEMENTS =============
 
@@ -204,6 +87,7 @@ public class ChargedRigidbodyMovement : MovementForceSO
     public override MovementExecutionType ExecutionType => MovementExecutionType.Charged;
 }
 
+
 // ============= TRANSFORM MOVEMENTS =============
 
 [CreateAssetMenu(fileName = "NewContinuousTransform", menuName = "Movement/Transform/Continuous")]
@@ -250,5 +134,4 @@ public class ChargedTransformMovement : MovementForceSO
 }
 
 #endregion
-
 

@@ -229,7 +229,7 @@ Transform:
   m_GameObject: {fileID: 1221270911}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -4.96, y: 0.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -583,7 +583,7 @@ Transform:
   m_GameObject: {fileID: 1633897195}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.01, y: 0, z: 0}
+  m_LocalPosition: {x: -3.48, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -629,10 +629,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputMovementBridges:
-  - movementSO: {fileID: 11400000, guid: c5ea0cd8d31bd82468b8d846f0f265f9, type: 2}
-    baseInputSO: {fileID: 11400000, guid: d9762d8a56b0ea64ba5938908abcf1e9, type: 2}
-  - movementSO: {fileID: 11400000, guid: 190a2c2c4ac192c4f91cf0dd38f07a14, type: 2}
-    baseInputSO: {fileID: 11400000, guid: d9762d8a56b0ea64ba5938908abcf1e9, type: 2}
+  - bridgeName: 
+    enabled: 1
+    inputSource: {fileID: 0}
+    movement: {fileID: 0}
+    conditions:
+    - {fileID: 0}
+    modifiers: []
+    feedback:
+      animationTrigger: 
+      lockToAnimationDuration: 0
+      startSound: {fileID: 0}
+      loopSound: {fileID: 0}
+      endSound: {fileID: 0}
+      volume: 0
+      startVFX: {fileID: 0}
+      loopVFX: {fileID: 0}
+      endVFX: {fileID: 0}
+      attachVFXToTransform: 0
+      enableCameraShake: 0
+      shakeIntensity: 0
+      shakeDuration: 0
+    showDebugInfo: 0
 --- !u!114 &1633897201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,12 +663,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1816d0fb59bc86245a55cd6e826afe9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rigidbody2D: {fileID: 1633897199}
-  _transform: {fileID: 1633897198}
+  rb2D: {fileID: 0}
+  trans: {fileID: 0}
+  animator: {fileID: 0}
+  audioSource: {fileID: 0}
+  debugMode: 0
   OnMovementStarted:
     m_PersistentCalls:
       m_Calls: []
   OnMovementCompleted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnMovementCancelled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnConditionFailed:
     m_PersistentCalls:
       m_Calls: []
 --- !u!58 &1633897202
