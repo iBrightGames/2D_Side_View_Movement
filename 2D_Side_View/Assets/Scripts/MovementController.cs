@@ -22,7 +22,7 @@ public class MovementController : MonoBehaviour
         if (_rigidbody2D == null) _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
-    public void ApplyForce(MovementForceSO force, Vector3 inputDirection = default)
+    public void ApplyForce(Movement force, Vector3 inputDirection = default)
     {
         MovementExecutor.ApplyForce(force, inputDirection, _transform, _rigidbody2D);
     }

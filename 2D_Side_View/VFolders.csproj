@@ -65,20 +65,20 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\vFolders\VFoldersMenu.cs" />
-    <Compile Include="Assets\vFolders\VFoldersLibs.cs" />
-    <Compile Include="Assets\vFolders\VFoldersIconEditor.cs" />
-    <Compile Include="Assets\vFolders\VFoldersPaletteWindow.cs" />
-    <Compile Include="Assets\vFolders\VFolders.cs" />
-    <Compile Include="Assets\vFolders\VFoldersData.cs" />
-    <Compile Include="Assets\vFolders\VFoldersPaletteEditor.cs" />
-    <Compile Include="Assets\vFolders\VFoldersMenuItems.cs" />
-    <Compile Include="Assets\vFolders\VFoldersCache.cs" />
-    <Compile Include="Assets\vFolders\VFoldersPalette.cs" />
+    <Compile Include="Assets\v_Editörs\vFolders\VFoldersPaletteWindow.cs" />
+    <Compile Include="Assets\v_Editörs\vFolders\VFolders.cs" />
+    <Compile Include="Assets\v_Editörs\vFolders\VFoldersMenuItems.cs" />
+    <Compile Include="Assets\v_Editörs\vFolders\VFoldersCache.cs" />
+    <Compile Include="Assets\v_Editörs\vFolders\VFoldersPalette.cs" />
+    <Compile Include="Assets\v_Editörs\vFolders\VFoldersPaletteEditor.cs" />
+    <Compile Include="Assets\v_Editörs\vFolders\VFoldersMenu.cs" />
+    <Compile Include="Assets\v_Editörs\vFolders\VFoldersLibs.cs" />
+    <Compile Include="Assets\v_Editörs\vFolders\VFoldersData.cs" />
+    <Compile Include="Assets\v_Editörs\vFolders\VFoldersIconEditor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\vFolders\VFolders.asmdef" />
-    <None Include="Assets\vFolders\VFoldersOutline.shader" />
+    <None Include="Assets\v_Editörs\vFolders\VFolders.asmdef" />
+    <None Include="Assets\v_Editörs\vFolders\VFoldersOutline.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

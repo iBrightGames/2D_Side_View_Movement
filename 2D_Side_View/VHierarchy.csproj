@@ -65,23 +65,23 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\vHierarchy\VHierarchyLibs.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyLightingWindow.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyIconEditor.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyPaletteWindow.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyData.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyComponentWindow.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyDataComponent.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyPaletteEditor.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyMenu.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyMenuItems.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchy.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyCache.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyComponentEditor.cs" />
-    <Compile Include="Assets\vHierarchy\VHierarchyPalette.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyMenuItems.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyPaletteEditor.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyCache.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyMenu.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyLibs.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyPaletteWindow.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyComponentWindow.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyPalette.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchy.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyComponentEditor.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyDataComponent.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyIconEditor.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyData.cs" />
+    <Compile Include="Assets\v_Editörs\vHierarchy\VHierarchyLightingWindow.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\vHierarchy\VHierarchy.asmdef" />
+    <None Include="Assets\v_Editörs\vHierarchy\VHierarchy.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

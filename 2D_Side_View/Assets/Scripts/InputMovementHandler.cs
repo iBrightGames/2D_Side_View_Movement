@@ -7,20 +7,20 @@ using System.Collections;
 
 public class InputMovementHandler : MonoBehaviour
 {
-    [SerializeField] private InputMovementBridge[] inputMovementBridges;
+    [SerializeField] private InputMovementBridgeSO[] inputMovementBridges;
     private MovementController movementController;
 
-    // Track active coroutines for triggered movements
-    private System.Collections.Generic.Dictionary<MovementForceSO, Coroutine> activeTriggeredMovements 
-        = new System.Collections.Generic.Dictionary<MovementForceSO, Coroutine>();
+    
+    private System.Collections.Generic.Dictionary<Movement, Coroutine> activeTriggeredMovements 
+        = new System.Collections.Generic.Dictionary<Movement, Coroutine>();// Track active coroutines for triggered movements
 
-    // Track continuous movements
-    private System.Collections.Generic.Dictionary<MovementForceSO, float> continuousMovementTimers 
-        = new System.Collections.Generic.Dictionary<MovementForceSO, float>();
 
-    // Track charged movements
-    private System.Collections.Generic.Dictionary<MovementForceSO, float> chargeTimers 
-        = new System.Collections.Generic.Dictionary<MovementForceSO, float>();
+    private System.Collections.Generic.Dictionary<Movement, float> continuousMovementTimers 
+        = new System.Collections.Generic.Dictionary<Movement, float>();    // Track continuous movements
+
+
+    private System.Collections.Generic.Dictionary<Movement, float> chargeTimers 
+        = new System.Collections.Generic.Dictionary<Movement, float>();    // Track charged movements
 
     private void Awake()
     {
@@ -31,19 +31,19 @@ public class InputMovementHandler : MonoBehaviour
     {
         foreach (var bridge in inputMovementBridges)
         {
-            if (bridge.baseInputSO == null || bridge.movementSO == null) continue;
+            if (bridge.baseInput == null || bridge.movement == null) continue;
 
             ProcessBridge(bridge);
         }
     }
 
-    private void ProcessBridge(InputMovementBridge bridge)
+    private void ProcessBridge(InputMovementBridgeSO bridge)
     {
-        BaseInputSO input = bridge.baseInputSO;
-        MovementForceSO movement = bridge.movementSO;
+        BaseInput input = bridge.baseInput;
+        Movement movement = bridge.movement;
 
         Vector3 inputDirection = Vector3.zero;
-        if (input is ExternalInputSO externalInput)
+        if (input is ExternalInput externalInput)
         {
             inputDirection = externalInput.GetInputDirection();
         }
@@ -64,8 +64,8 @@ public class InputMovementHandler : MonoBehaviour
         }
     }
 
-    private void HandleContinuousMovement(InputMovementBridge bridge, BaseInputSO input, 
-                                          MovementForceSO movement, Vector3 inputDirection)
+    private void HandleContinuousMovement(InputMovementBridgeSO bridge, BaseInput input, 
+                                          Movement movement, Vector3 inputDirection)
     {
         bool isHeld = input.IsHeld();
 
@@ -103,8 +103,8 @@ public class InputMovementHandler : MonoBehaviour
         }
     }
 
-    private void HandleTriggeredMovement(InputMovementBridge bridge, BaseInputSO input, 
-                                         MovementForceSO movement, Vector3 inputDirection)
+    private void HandleTriggeredMovement(InputMovementBridgeSO bridge, BaseInput input, 
+                                         Movement movement, Vector3 inputDirection)
     {
         // Check if already executing
         bool isBlocked = activeTriggeredMovements.ContainsKey(movement);
@@ -136,14 +136,14 @@ public class InputMovementHandler : MonoBehaviour
         }
     }
 
-    private IEnumerator CleanupTriggeredMovement(MovementForceSO movement, Coroutine coroutine)
+    private IEnumerator CleanupTriggeredMovement(Movement movement, Coroutine coroutine)
     {
         yield return coroutine;
         activeTriggeredMovements.Remove(movement);
     }
 
-    private void HandleChargedMovement(InputMovementBridge bridge, BaseInputSO input, 
-                                       MovementForceSO movement, Vector3 inputDirection)
+    private void HandleChargedMovement(InputMovementBridgeSO bridge, BaseInput input, 
+                                       Movement movement, Vector3 inputDirection)
     {
         bool isHeld = input.IsHeld();
         bool wasHeld = chargeTimers.ContainsKey(movement);

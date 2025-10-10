@@ -67,8 +67,11 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\MovementController.cs" />
     <Compile Include="Assets\Scripts\InputMovementHandler.cs" />
+    <Compile Include="Assets\EditorScripts\BaseInputDrawer.cs" />
     <Compile Include="Assets\Scripts\InputSystem Integration.cs" />
+    <Compile Include="Assets\EditorScripts\InputEditorWindow.cs" />
     <Compile Include="Assets\InputSystem_Actions.cs" />
+    <Compile Include="Assets\Scripts\MovementDebugHelper.cs" />
     <Compile Include="Assets\Scripts\MovementExecuter.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1053,11 +1056,11 @@
     <ProjectReference Include="PsdPlugin.csproj" />
     <ProjectReference Include="Unity.2D.Common.Editor.csproj" />
     <ProjectReference Include="Unity.2D.Common.Path.Editor.csproj" />
-    <ProjectReference Include="VTabs.csproj" />
     <ProjectReference Include="Unity.RenderPipeline.Universal.ShaderLibrary.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Universal.Shaders.csproj" />
     <ProjectReference Include="Unity.2D.IK.Editor.csproj" />
     <ProjectReference Include="Unity.2D.IK.Runtime.csproj" />
+    <ProjectReference Include="VTabs.csproj" />
     <ProjectReference Include="Unity.2D.SpriteShape.Runtime.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Core.Runtime.Shared.csproj" />
     <ProjectReference Include="Unity.Timeline.Editor.csproj" />
@@ -1065,13 +1068,13 @@
     <ProjectReference Include="Unity.Timeline.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Core.Editor.Shared.csproj" />
     <ProjectReference Include="UnityEngine.UI.csproj" />
-    <ProjectReference Include="VHierarchy.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Core.ShaderLibrary.csproj" />
     <ProjectReference Include="Unity.PlasticSCM.Editor.csproj" />
     <ProjectReference Include="Unity.2D.Aseprite.Editor.csproj" />
     <ProjectReference Include="Unity.Multiplayer.Center.Editor.csproj" />
     <ProjectReference Include="Unity.Mathematics.Editor.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.GPUDriven.Runtime.csproj" />
+    <ProjectReference Include="VHierarchy.csproj" />
     <ProjectReference Include="Unity.InternalAPIEditorBridge.001.csproj" />
     <ProjectReference Include="Unity.2D.Animation.Editor.csproj" />
     <ProjectReference Include="Unity.Collections.csproj" />
@@ -1080,21 +1083,21 @@
     <ProjectReference Include="Unity.Rendering.LightTransport.Editor.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Core.csproj" />
     <ProjectReference Include="Unity.InternalAPIEngineBridge.001.csproj" />
+    <ProjectReference Include="VFolders.csproj" />
     <ProjectReference Include="Unity.2D.Tilemap.Editor.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Universal.Config.Runtime.csproj" />
     <ProjectReference Include="Unity.2D.Aseprite.Common.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Universal.Editor.csproj" />
     <ProjectReference Include="Unity.2D.Animation.Runtime.csproj" />
     <ProjectReference Include="Unity.Collections.Editor.csproj" />
-    <ProjectReference Include="VFolders.csproj" />
     <ProjectReference Include="Unity.2D.Tilemap.Extras.Editor.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Shared.Editor.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Core.Editor.csproj" />
     <ProjectReference Include="Unity.Multiplayer.Center.Common.csproj" />
-    <ProjectReference Include="VFavorites.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Flow.Editor.csproj" />
     <ProjectReference Include="Unity.TextMeshPro.csproj" />
+    <ProjectReference Include="VFavorites.csproj" />
     <ProjectReference Include="Unity.2D.Tilemap.Extras.csproj" />
     <ProjectReference Include="Unity.2D.Common.Runtime.csproj" />
     <ProjectReference Include="Unity.VisualScripting.SettingsProvider.Editor.csproj" />

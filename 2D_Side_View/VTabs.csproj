@@ -65,13 +65,13 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\vTabs\VTabs.cs" />
-    <Compile Include="Assets\vTabs\VTabsLibs.cs" />
-    <Compile Include="Assets\vTabs\VTabsMenuItems.cs" />
-    <Compile Include="Assets\vTabs\VTabsMenu.cs" />
+    <Compile Include="Assets\v_Editörs\vTabs\VTabsMenu.cs" />
+    <Compile Include="Assets\v_Editörs\vTabs\VTabsMenuItems.cs" />
+    <Compile Include="Assets\v_Editörs\vTabs\VTabsLibs.cs" />
+    <Compile Include="Assets\v_Editörs\vTabs\VTabs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\vTabs\VTabs.asmdef" />
+    <None Include="Assets\v_Editörs\vTabs\VTabs.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

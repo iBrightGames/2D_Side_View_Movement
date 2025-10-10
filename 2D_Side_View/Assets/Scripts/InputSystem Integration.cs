@@ -1,25 +1,30 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Events;
-using System.Collections;
+
+#region  Bridge
+
+
+[CreateAssetMenu(fileName = "NewInputBridge", menuName = "Movement/Input/InputBridge")]
+public class InputMovementBridgeSO : ScriptableObject
+{
+    [SerializeField, SerializeReference]
+    public Movement movement;
+    [SerializeField, SerializeReference]
+    public BaseInput baseInput;
+}
+
+#endregion
 
 #region Input System
 
 [System.Serializable]
-public class InputMovementBridge
-{
-    public MovementForceSO movementSO;
-    public BaseInputSO baseInputSO;
-}
-
-public abstract class BaseInputSO : ScriptableObject
+public abstract class BaseInput
 {
     public abstract bool ShouldExecute();
     public abstract bool IsHeld();
 }
-
-[CreateAssetMenu(fileName = "NewExternalInputSO", menuName = "Movement/Input/ExternalInputSO")]
-public class ExternalInputSO : BaseInputSO
+[System.Serializable]
+public class ExternalInput : BaseInput
 {
     public InputActionReference inputAction;
 
@@ -72,9 +77,8 @@ public class ExternalInputSO : BaseInputSO
         }
     }
 }
-
-[CreateAssetMenu(fileName = "NewInternalInputSO", menuName = "Movement/Input/InternalInputSO")]
-public class InternalInputSO : BaseInputSO
+[System.Serializable]
+public class InternalInput : BaseInput
 {
     [Header("Runtime Control")]
     [Tooltip("Toggle this bool from scripts to control movement")]
@@ -118,12 +122,12 @@ public class InternalInputSO : BaseInputSO
 
 #endregion
 
-#region Movement Force ScriptableObjects
+#region Movement System
 
 public enum ForceType { Linear, Angular, Scaler }
 public enum CompletionType { None, Time, Rotation, Distance, Condition }
-
-public abstract class MovementForceSO : ScriptableObject
+[System.Serializable]
+public abstract class Movement
 {
     [Header("Force Configuration")]
     [SerializeField] protected ForceType forceType;
@@ -133,9 +137,15 @@ public abstract class MovementForceSO : ScriptableObject
     [Tooltip("If true, uses input direction instead of configured direction")]
     [SerializeField] protected bool useInputDirection = false;
 
-    public ForceType ForceType => forceType;
-    public Vector3 Direction => direction;
-    public bool UseInputDirection => useInputDirection;
+    public ForceType ForceType{get => forceType;set => forceType = value;}
+
+    public Vector3 Direction{ get => direction; set => direction = value; }
+
+    public bool UseInputDirection
+    {
+        get => useInputDirection;
+        set => useInputDirection = value;
+    }
 
     public abstract MovementExecutionType ExecutionType { get; }
 }
@@ -148,9 +158,8 @@ public enum MovementExecutionType
 }
 
 // ============= RIGIDBODY MOVEMENTS =============
-
-[CreateAssetMenu(fileName = "NewContinuousRigidbody", menuName = "Movement/Rigidbody/Continuous")]
-public class ContinuousRigidbodyMovement : MovementForceSO
+[System.Serializable]
+public class ContinuousRigidbodyMovement : Movement
 {
     [Header("Rigidbody Settings")]
     [SerializeField] private ForceMode2D forceMode2D = ForceMode2D.Force;
@@ -159,13 +168,12 @@ public class ContinuousRigidbodyMovement : MovementForceSO
     [Tooltip("Max duration in seconds. 0 = unlimited")]
     [Range(0, 10)][SerializeField] private float maxDuration = 0f;
 
-    public ForceMode2D ForceMode2D => forceMode2D;
-    public float MaxDuration => maxDuration;
+    public ForceMode2D ForceMode2D{get =>forceMode2D;set => forceMode2D = value;}
+    public float MaxDuration{get => maxDuration;set => maxDuration = value;}    
     public override MovementExecutionType ExecutionType => MovementExecutionType.Continuous;
 }
-
-[CreateAssetMenu(fileName = "NewTriggeredRigidbody", menuName = "Movement/Rigidbody/Triggered")]
-public class TriggeredRigidbodyMovement : MovementForceSO
+[System.Serializable]
+public class TriggeredRigidbodyMovement : Movement
 {
     [Header("Rigidbody Settings")]
     [SerializeField] private ForceMode2D forceMode2D = ForceMode2D.Impulse;
@@ -179,15 +187,18 @@ public class TriggeredRigidbodyMovement : MovementForceSO
     [Tooltip("Can only trigger again after this completes")]
     [SerializeField] private bool blockUntilComplete = true;
 
-    public ForceMode2D ForceMode2D => forceMode2D;
-    public CompletionType CompletionType => completionType;
-    public float CompletionValue => completionValue;
-    public bool BlockUntilComplete => blockUntilComplete;
+    public ForceMode2D ForceMode2D
+    {
+        get => forceMode2D;
+        set => forceMode2D = value;
+    }
+    public CompletionType CompletionType {get=> completionType;set=> completionType=value;}
+    public float CompletionValue{get => completionValue;set => completionValue=value;}
+    public bool BlockUntilComplete {get=> blockUntilComplete;set=> blockUntilComplete=value;}
     public override MovementExecutionType ExecutionType => MovementExecutionType.Triggered;
 }
-
-[CreateAssetMenu(fileName = "NewChargedRigidbody", menuName = "Movement/Rigidbody/Charged")]
-public class ChargedRigidbodyMovement : MovementForceSO
+[System.Serializable]
+public class ChargedRigidbodyMovement : Movement
 {
     [Header("Rigidbody Settings")]
     [SerializeField] private ForceMode2D forceMode2D = ForceMode2D.Impulse;
@@ -197,28 +208,26 @@ public class ChargedRigidbodyMovement : MovementForceSO
     [SerializeField] private float maxChargeTime = 2f;
     [SerializeField] private float chargeMultiplier = 2f;
 
-    public ForceMode2D ForceMode2D => forceMode2D;
-    public float MinChargeTime => minChargeTime;
-    public float MaxChargeTime => maxChargeTime;
-    public float ChargeMultiplier => chargeMultiplier;
+    public ForceMode2D ForceMode2D {get=> forceMode2D;set=> forceMode2D=value;}
+    public float MinChargeTime{get => minChargeTime;set => minChargeTime=value;}
+    public float MaxChargeTime { get => maxChargeTime; set => maxChargeTime = value; }    
+    public float ChargeMultiplier {get=> chargeMultiplier;set=> chargeMultiplier=value;}
     public override MovementExecutionType ExecutionType => MovementExecutionType.Charged;
 }
 
 // ============= TRANSFORM MOVEMENTS =============
-
-[CreateAssetMenu(fileName = "NewContinuousTransform", menuName = "Movement/Transform/Continuous")]
-public class ContinuousTransformMovement : MovementForceSO
+[System.Serializable]
+public class ContinuousTransformMovement : Movement
 {
     [Header("Duration (Optional)")]
     [Tooltip("Max duration in seconds. 0 = unlimited")]
     [Range(0, 10)][SerializeField] private float maxDuration = 0f;
 
-    public float MaxDuration => maxDuration;
+    public float MaxDuration {get=> maxDuration;set=> maxDuration=value;}
     public override MovementExecutionType ExecutionType => MovementExecutionType.Continuous;
 }
-
-[CreateAssetMenu(fileName = "NewTriggeredTransform", menuName = "Movement/Transform/Triggered")]
-public class TriggeredTransformMovement : MovementForceSO
+[System.Serializable]
+public class TriggeredTransformMovement : Movement
 {
     [Header("Completion Settings")]
     [SerializeField] private CompletionType completionType = CompletionType.Time;
@@ -229,23 +238,22 @@ public class TriggeredTransformMovement : MovementForceSO
     [Tooltip("Can only trigger again after this completes")]
     [SerializeField] private bool blockUntilComplete = true;
 
-    public CompletionType CompletionType => completionType;
-    public float CompletionValue => completionValue;
-    public bool BlockUntilComplete => blockUntilComplete;
+    public CompletionType CompletionType{get => completionType;set => completionType=value;}
+    public float CompletionValue {get=> completionValue;set=> completionValue=value;}
+    public bool BlockUntilComplete {get=> blockUntilComplete;set=> blockUntilComplete=value;}
     public override MovementExecutionType ExecutionType => MovementExecutionType.Triggered;
 }
-
-[CreateAssetMenu(fileName = "NewChargedTransform", menuName = "Movement/Transform/Charged")]
-public class ChargedTransformMovement : MovementForceSO
+[System.Serializable]
+public class ChargedTransformMovement : Movement
 {
     [Header("Charge Settings")]
     [SerializeField] private float minChargeTime = 0.2f;
     [SerializeField] private float maxChargeTime = 2f;
     [SerializeField] private float chargeMultiplier = 2f;
 
-    public float MinChargeTime => minChargeTime;
-    public float MaxChargeTime => maxChargeTime;
-    public float ChargeMultiplier => chargeMultiplier;
+    public float MinChargeTime {get=> minChargeTime;set=> minChargeTime=value;}
+    public float MaxChargeTime {get=> maxChargeTime;set=> maxChargeTime=value;}
+    public float ChargeMultiplier {get=> chargeMultiplier;set=> chargeMultiplier=value;}
     public override MovementExecutionType ExecutionType => MovementExecutionType.Charged;
 }
 

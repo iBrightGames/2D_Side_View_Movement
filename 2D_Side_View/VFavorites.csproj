@@ -65,15 +65,15 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\vFavorites\VFavoritesMenu.cs" />
-    <Compile Include="Assets\vFavorites\VFavoritesMenuItems.cs" />
-    <Compile Include="Assets\vFavorites\VFavoritesState.cs" />
-    <Compile Include="Assets\vFavorites\VFavoritesLibs.cs" />
-    <Compile Include="Assets\vFavorites\VFavoritesData.cs" />
-    <Compile Include="Assets\vFavorites\VFavorites.cs" />
+    <Compile Include="Assets\v_Editörs\vFavorites\VFavoritesMenu.cs" />
+    <Compile Include="Assets\v_Editörs\vFavorites\VFavoritesLibs.cs" />
+    <Compile Include="Assets\v_Editörs\vFavorites\VFavoritesState.cs" />
+    <Compile Include="Assets\v_Editörs\vFavorites\VFavoritesMenuItems.cs" />
+    <Compile Include="Assets\v_Editörs\vFavorites\VFavorites.cs" />
+    <Compile Include="Assets\v_Editörs\vFavorites\VFavoritesData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\vFavorites\VFavorites.asmdef" />
+    <None Include="Assets\v_Editörs\vFavorites\VFavorites.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
