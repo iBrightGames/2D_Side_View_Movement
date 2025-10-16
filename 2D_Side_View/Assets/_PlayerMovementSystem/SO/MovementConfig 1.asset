@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2629612adc94f12488e52ab45b95aa25, type: 3}
+  m_Name: MovementConfig 1
+  m_EditorClassIdentifier: 
+  forceType: 0
+  forceMode2D: 1
+  forceMagnitude: 2
+  directionSource: 0
+  manualDirection: {x: 0, y: 1}
+  normalizeVelocity: 1
+  limitMaxSpeed: 0
+  maxLinearSpeed: 10
+  limitMaxAngularSpeed: 0
+  maxAngularSpeed: 360
