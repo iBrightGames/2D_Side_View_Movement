@@ -10,19 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e323f8cb98e28b408ea0335bdc54097, type: 3}
-  m_Name: MovementData
+  m_Name: MovementData 3
   m_EditorClassIdentifier: 
-  doType: 4
+  doType: 5
   targetValue: {x: 0, y: 0}
-  toEnd: 180
+  toEnd: 8
   jumpPower: 2
   jumpCount: 1
-  pathPoints: []
+  pathPoints:
+  - {x: 5, y: 20}
+  - {x: 5, y: 6}
   pathType: 0
   pathMode: 1
-  duration: 1
+  duration: 5
   ease: 1
   delay: 0
-  loopType: 2
+  loopType: 1
   loopCount: -1
   useRelativeValues: 0

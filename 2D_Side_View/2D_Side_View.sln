@@ -157,6 +157,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.RenderPipelines.Core.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptablePacker", "ScriptablePacker.csproj", "{89606BA7-4E6C-1112-F1BA-8C2CF8C6BBC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{64F63333-F658-737D-C125-84E323760BCE}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.PlasticSCM.Editor.Entities", "Unity.PlasticSCM.Editor.Entities.csproj", "{A5D6AF53-A3FC-A4C8-B55A-95CEDAE17BF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Collections.Editor", "Unity.Collections.Editor.csproj", "{227D25EB-510C-8758-ADB1-7C3A4257057B}"
@@ -487,6 +489,10 @@ Global
 		{89606BA7-4E6C-1112-F1BA-8C2CF8C6BBC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89606BA7-4E6C-1112-F1BA-8C2CF8C6BBC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89606BA7-4E6C-1112-F1BA-8C2CF8C6BBC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64F63333-F658-737D-C125-84E323760BCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64F63333-F658-737D-C125-84E323760BCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64F63333-F658-737D-C125-84E323760BCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64F63333-F658-737D-C125-84E323760BCE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A5D6AF53-A3FC-A4C8-B55A-95CEDAE17BF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A5D6AF53-A3FC-A4C8-B55A-95CEDAE17BF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5D6AF53-A3FC-A4C8-B55A-95CEDAE17BF9}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e323f8cb98e28b408ea0335bdc54097, type: 3}
-  m_Name: MovementData
+  m_Name: MovementData 2
   m_EditorClassIdentifier: 
   doType: 4
   targetValue: {x: 0, y: 0}
@@ -20,7 +20,7 @@ MonoBehaviour:
   pathPoints: []
   pathType: 0
   pathMode: 1
-  duration: 1
+  duration: 5
   ease: 1
   delay: 0
   loopType: 2

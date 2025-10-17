@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: MovementData 1
   m_EditorClassIdentifier: 
   doType: 4
-  targetValue: {x: 5, y: 5, z: 90}
-  rotateMode: 0
+  targetValue: {x: 0, y: 0}
+  toEnd: 180
   jumpPower: 2
   jumpCount: 1
   pathPoints: []
   pathType: 0
   pathMode: 1
-  duration: 1
+  duration: 5
   ease: 1
-  loopType: 1
+  delay: 0
+  loopType: 2
   loopCount: -1
+  useRelativeValues: 0

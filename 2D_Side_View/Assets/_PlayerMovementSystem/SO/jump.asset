@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2629612adc94f12488e52ab45b95aa25, type: 3}
-  m_Name: MovementConfig 1
+  m_Name: jump
   m_EditorClassIdentifier: 
   forceType: 0
   forceMode2D: 1
-  forceMagnitude: 2
+  forceMagnitude: 5
   directionSource: 0
-  manualDirection: {x: 1, y: 0}
+  manualDirection: {x: 0, y: 1}
   normalizeVelocity: 1
   limitMaxSpeed: 0
   maxLinearSpeed: 10

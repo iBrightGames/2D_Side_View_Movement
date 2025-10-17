@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceType: 0
   forceMode2D: 0
-  forceMagnitude: 2
+  forceMagnitude: 5
   directionSource: 0
-  manualDirection: {x: 0, y: 1}
+  manualDirection: {x: 1, y: 0}
   normalizeVelocity: 1
   limitMaxSpeed: 0
   maxLinearSpeed: 10
