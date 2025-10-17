@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e323f8cb98e28b408ea0335bdc54097, type: 3}
-  m_Name: MovementData 1
+  m_Name: MovementData 2
   m_EditorClassIdentifier: 
-  doType: 3
+  doType: 4
   targetValue: {x: 0, y: 10, z: 0}
   jumpPower: 2
   jumpCount: 1
