@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: MovementData
   m_EditorClassIdentifier: 
   doType: 0
-  targetValue: {x: 10, y: 0, z: 0}
+  targetValue: {x: 1, y: 0, z: 0}
+  rotateMode: 0
   jumpPower: 2
   jumpCount: 1
   pathPoints: []
@@ -23,6 +24,3 @@ MonoBehaviour:
   ease: 1
   loopType: 1
   loopCount: -1
-  useRelativeValues: 1
-  useRigidbody: 1
-  useLocalSpace: 0

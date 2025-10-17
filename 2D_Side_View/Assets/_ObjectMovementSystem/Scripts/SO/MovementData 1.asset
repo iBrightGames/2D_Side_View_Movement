@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e323f8cb98e28b408ea0335bdc54097, type: 3}
   m_Name: MovementData 1
   m_EditorClassIdentifier: 
-  doType: 3
-  targetValue: {x: 0, y: 10, z: 0}
+  doType: 4
+  targetValue: {x: 5, y: 5, z: 90}
+  rotateMode: 0
   jumpPower: 2
   jumpCount: 1
   pathPoints: []
@@ -23,6 +24,3 @@ MonoBehaviour:
   ease: 1
   loopType: 1
   loopCount: -1
-  useRelativeValues: 1
-  useRigidbody: 1
-  useLocalSpace: 0
