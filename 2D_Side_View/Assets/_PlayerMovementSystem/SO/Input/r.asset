@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 204a9c648e1f15c438ad29808660106b, type: 3}
-  m_Name: InputConfig
-  m_EditorClassIdentifier: 
-  inputActionReference: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_Script: {fileID: 0}
+  m_Name: r
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonInputConfig
+  inputActionReference: {fileID: 0}
   inputType: 0
+  buttonDirection: {x: 0, y: 1}

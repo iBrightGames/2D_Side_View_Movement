@@ -9,16 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2629612adc94f12488e52ab45b95aa25, type: 3}
-  m_Name: MovementConfig
-  m_EditorClassIdentifier: 
+  m_Script: {fileID: 0}
+  m_Name: LinearForceConfig
+  m_EditorClassIdentifier: Assembly-CSharp::LinearForceConfig
   forceType: 0
   forceMode2D: 0
   forceMagnitude: 5
-  directionSource: 0
-  manualDirection: {x: 1, y: 0}
-  normalizeVelocity: 1
-  limitMaxSpeed: 0
-  maxLinearSpeed: 10
-  limitMaxAngularSpeed: 0
-  maxAngularSpeed: 360
+  useInputDirection: 1
+  fixedDirection: {x: 1, y: 0}
+  maxVelocity: 0
+  resetVelocityBeforeApply: 0
+  resetOnlyY: 0

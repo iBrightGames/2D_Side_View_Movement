@@ -1,175 +1,173 @@
-using UnityEngine;
-using UnityEngine.InputSystem;
+// ============================================
+// PLAYER MOVEMENT CONTROLLER
+// ============================================
 
-[System.Serializable]
-public struct InputMovementBridge
-{
-    public InputConfig inputConfig;
-    public MovementConfig movementConfig;
-}
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovementController : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private Rigidbody2D rb;
+
+    [Header("Movement Configuration")]
     [SerializeField] private InputMovementBridge[] inputMovementBridges;
-    [SerializeField] private bool showDebugLogs = true;
+
+    [Header("Ground Detection")]
+    [SerializeField] private bool checkGrounded = true;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Vector2 groundCheckOffset = Vector2.zero;
+    [SerializeField] private float groundCheckDistance = 0.1f;
+
+    [Header("Debug")]
+    [SerializeField] private bool showDebugLogs = false;
+
+    private bool isGrounded;
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        if (showDebugLogs) Debug.Log($"[Movement] Awake - Rigidbody2D: {rb != null}");
+        if (rb == null)
+        {
+            rb = GetComponent<Rigidbody2D>();
+        }
+
+        if (showDebugLogs)
+        {
+            Debug.Log($"[Movement] Awake - Rigidbody2D: {rb != null}, Bridges: {inputMovementBridges.Length}");
+        }
     }
-    
+
     private void OnEnable()
     {
-        if (showDebugLogs) Debug.Log($"[Movement] OnEnable - Bridge count: {inputMovementBridges.Length}");
-        
         foreach (var bridge in inputMovementBridges)
         {
-            if (bridge.inputConfig.inputType == InputType.Triggered && bridge.inputConfig != null)
+            if (bridge.inputConfig == null) continue;
+
+            bridge.inputConfig.Initialize();
+
+            // Triggered input'lar için event subscribe
+            if (bridge.inputConfig.inputType == InputType.Triggered)
             {
-                bridge.inputConfig.inputActionReference.action.performed += ctx =>
+                var action = bridge.inputConfig.inputActionReference.action;
+                action.performed += ctx => OnTriggeredInput(bridge);
+
+                if (showDebugLogs)
                 {
-                    if (showDebugLogs) Debug.Log($"[Movement] Triggered input performed: {bridge.inputConfig.inputActionReference.action.name}");
-                    ExecuteTriggeredMovement(bridge);
-                };
-                bridge.inputConfig.inputActionReference.action.Enable();
-                
-                if (showDebugLogs) Debug.Log($"[Movement] Enabled triggered input: {bridge.inputConfig.inputActionReference.action.name}");
+                    Debug.Log($"[Movement] Subscribed to triggered input: {action.name}");
+                }
             }
         }
     }
-    
+
     private void OnDisable()
     {
         foreach (var bridge in inputMovementBridges)
         {
-            if (bridge.inputConfig.inputType == InputType.Triggered && bridge.inputConfig != null)
+            if (bridge.inputConfig == null) continue;
+
+            if (bridge.inputConfig.inputType == InputType.Triggered)
             {
-                bridge.inputConfig.inputActionReference.action.performed -= ctx => ExecuteTriggeredMovement(bridge);
+                var action = bridge.inputConfig.inputActionReference.action;
+                action.performed -= ctx => OnTriggeredInput(bridge);
             }
+
+            bridge.inputConfig.Cleanup();
         }
     }
 
     private void Update()
     {
+        // Ground check
+        if (checkGrounded)
+        {
+            CheckGrounded();
+        }
+
+        // Continuous input'ları işle (Update'te oku, FixedUpdate'te uygula)
         foreach (var bridge in inputMovementBridges)
         {
-            if (bridge.inputConfig.inputType == InputType.Continuous && bridge.inputConfig.inputActionReference != null)
+            if (bridge.inputConfig == null) continue;
+
+            if (bridge.inputConfig.inputType == InputType.Continuous)
             {
                 Vector2? inputDir = bridge.inputConfig.GetDirection();
-                
-                if (showDebugLogs && inputDir.HasValue && inputDir.Value != Vector2.zero)
-                {
-                    Debug.Log($"[Movement] Continuous input - Action: {bridge.inputConfig.inputActionReference.action.name}, Direction: {inputDir.Value}");
-                }
-                
+
                 if (inputDir.HasValue && inputDir.Value != Vector2.zero)
                 {
-                    ExecuteMovement(bridge, inputDir);
+                    if (bridge.CanExecute(isGrounded))
+                    {
+                        if (showDebugLogs)
+                        {
+                            Debug.Log($"[Continuous] Input: {inputDir.Value}");
+                        }
+                    }
                 }
             }
         }
     }
-    
-    private void ExecuteTriggeredMovement(InputMovementBridge bridge)
+
+    private void FixedUpdate()
     {
-        Vector2? inputDir = bridge.inputConfig.GetDirection();
-        if (showDebugLogs) Debug.Log($"[Movement] ExecuteTriggeredMovement - InputDir: {inputDir}");
-        ExecuteMovement(bridge, inputDir);
+        // Continuous movement'ları uygula
+        foreach (var bridge in inputMovementBridges)
+        {
+            if (bridge.inputConfig == null) continue;
+
+            if (bridge.inputConfig.inputType == InputType.Continuous)
+            {
+                Vector2? inputDir = bridge.inputConfig.GetDirection();
+
+                if (inputDir.HasValue && inputDir.Value != Vector2.zero)
+                {
+                    if (bridge.CanExecute(isGrounded))
+                    {
+                        MovementExecuter.ExecuteMovement(rb, bridge, inputDir, showDebugLogs);
+                    }
+                }
+            }
+        }
     }
 
-    private void ExecuteMovement(InputMovementBridge bridge, Vector2? inputDirection)
+    private void OnTriggeredInput(InputMovementBridge bridge)
     {
-        var config = bridge.movementConfig;
-        
-        if (config.forceType == ForceType.Linear)
+        if (!bridge.CanExecute(isGrounded))
         {
-            Vector2 force = config.GetLinearDirection(inputDirection, rb.linearVelocity);
-            
             if (showDebugLogs)
             {
-                Debug.Log($"[Movement] Linear Force - Direction: {force}, Magnitude: {force.magnitude}, ForceMode: {config.forceMode2D}");
-                Debug.Log($"[Movement] Before - Velocity: {rb.linearVelocity}, Position: {rb.position}");
+                Debug.Log($"[Triggered] Movement blocked - Grounded: {isGrounded}, Cooldown active");
             }
-            
-            MovementExecuter.ApplyLinearForce(rb, force, config.forceMode2D, config);
-            
-            if (showDebugLogs)
-            {
-                Debug.Log($"[Movement] After - Velocity: {rb.linearVelocity}");
-            }
+            return;
         }
-        else if (config.forceType == ForceType.Angular)
+
+        Vector2? inputDir = bridge.inputConfig.GetDirection();
+
+        if (showDebugLogs)
         {
-            float torque = config.GetAngularMagnitude();
-            
-            if (showDebugLogs)
-            {
-                Debug.Log($"[Movement] Angular Force - Torque: {torque}");
-                Debug.Log($"[Movement] Before - AngularVelocity: {rb.angularVelocity}");
-            }
-            
-            MovementExecuter.ApplyAngularForce(rb, torque, config);
-            
-            if (showDebugLogs)
-            {
-                Debug.Log($"[Movement] After - AngularVelocity: {rb.angularVelocity}");
-            }
+            Debug.Log($"[Triggered] Input received - Direction: {inputDir}");
         }
+
+        MovementExecuter.ExecuteMovement(rb, bridge, inputDir, showDebugLogs);
+    }
+
+    private void CheckGrounded()
+    {
+        Vector2 checkPosition = (Vector2)transform.position + groundCheckOffset;
+        isGrounded = Physics2D.Raycast(checkPosition, Vector2.down, groundCheckDistance, groundLayer);
+
+        if (showDebugLogs)
+        {
+            Debug.DrawRay(checkPosition, Vector2.down * groundCheckDistance, isGrounded ? Color.green : Color.red);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (!checkGrounded) return;
+
+        Vector2 checkPosition = (Vector2)transform.position + groundCheckOffset;
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Gizmos.DrawLine(checkPosition, checkPosition + Vector2.down * groundCheckDistance);
+        Gizmos.DrawWireSphere(checkPosition + Vector2.down * groundCheckDistance, 0.1f);
     }
 }
 
-// using UnityEngine;
-// using UnityEngine.InputSystem;
-
-// [System.Serializable]
-// public struct InputMovementBridge
-// {
-//     [SerializeField] public InputConfig inputConfig;
-//     [SerializeField] public MovementConfig movementConfig;
-// }
-// [RequireComponent(typeof(Rigidbody2D))]
-// public class PlayerMovementController : MonoBehaviour
-// {
-//     [SerializeField] Rigidbody2D rigidbody2D;
-//     [SerializeField] InputMovementBridge[] inputMovementBridges;
-
-//     void Awake()
-//     {
-//         rigidbody2D = GetComponent<Rigidbody2D>();
-//     }
-//     private void OnEnable()
-//     {
-//         foreach (var bridge in inputMovementBridges)
-//         {
-//             if (bridge.inputConfig.inputType == InputType.Triggered && bridge.inputConfig != null)
-//             {
-//                 bridge.inputConfig.inputActionReference.action.performed += ctx =>
-//                 {
-                    
-//                 };
-//                 bridge.inputConfig.inputActionReference.action.Enable();
-//             }
-//         }
-//     }
-
-//     private void Update()
-//     {
-//         foreach (var bridge in inputMovementBridges)
-//         {
-//             if (bridge.inputConfig.inputType == InputType.Continuous && bridge.inputConfig.inputActionReference != null)
-//             {
-//                 Vector2 dir = bridge.inputConfig.inputActionReference.action.ReadValue<Vector2>();
-//                 if (dir != Vector2.zero)
-//                     ApplyMovement(bridge.movementConfig, dir);
-//             }
-//         }
-//     }
-
-//     private void ApplyMovement(MovementConfig config, Vector2 direction)
-//     {
-//         MovementExecuter.ApplyLinearForce(rigidbody2D, direction, config.forceMode2D);
-//     }
-// }

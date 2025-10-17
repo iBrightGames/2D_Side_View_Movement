@@ -18,7 +18,7 @@ MonoBehaviour:
   jumpPower: 2
   jumpCount: 1
   pathPoints:
-  - {x: 55, y: -2.5}
+  - {x: 55, y: -3}
   - {x: 55, y: 9}
   pathType: 0
   pathMode: 1
