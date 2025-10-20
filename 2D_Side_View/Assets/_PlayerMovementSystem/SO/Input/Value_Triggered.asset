@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: ValueInputConfig
+  m_Name: Value_Triggered
   m_EditorClassIdentifier: Assembly-CSharp::ValueInputConfig
   inputActionReference: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  inputType: 0
+  inputType: 1

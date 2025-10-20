@@ -5,7 +5,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public struct InputMovementBridge
+public class InputMovementBridge
 {
     public InputConfig inputConfig;
     public ForceConfig movementConfig;

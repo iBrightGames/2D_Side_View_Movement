@@ -2,6 +2,7 @@
 // PLAYER MOVEMENT CONTROLLER
 // ============================================
 
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -11,7 +12,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
 
     [Header("Movement Configuration")]
-    [SerializeField] private InputMovementBridge[] inputMovementBridges;
+    [SerializeField] public List<InputMovementBridge> inputMovementBridges;
 
     [Header("Ground Detection")]
     [SerializeField] private bool checkGrounded = true;
@@ -33,11 +34,12 @@ public class PlayerMovementController : MonoBehaviour
 
         if (showDebugLogs)
         {
-            Debug.Log($"[Movement] Awake - Rigidbody2D: {rb != null}, Bridges: {inputMovementBridges.Length}");
+            Debug.Log($"[Movement] Awake - Rigidbody2D: {rb != null}, Bridges: {inputMovementBridges.Count}");
         }
+        Initialize();
     }
 
-    private void OnEnable()
+    public void Initialize()
     {
         foreach (var bridge in inputMovementBridges)
         {

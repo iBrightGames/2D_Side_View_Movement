@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: LinearForceConfig
+  m_Name: L_Impulse
   m_EditorClassIdentifier: Assembly-CSharp::LinearForceConfig
   forceType: 0
-  forceMode2D: 0
-  forceMagnitude: 5
+  forceMode2D: 1
+  forceMagnitude: 10
   useInputDirection: 1
   fixedDirection: {x: 1, y: 0}
   maxVelocity: 0

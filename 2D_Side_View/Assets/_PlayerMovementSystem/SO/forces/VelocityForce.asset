@@ -10,7 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: ValueInputConfig 1
-  m_EditorClassIdentifier: Assembly-CSharp::ValueInputConfig
-  inputActionReference: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  inputType: 1
+  m_Name: VelocityForce
+  m_EditorClassIdentifier: Assembly-CSharp::VelocityForceConfig
+  forceType: 0
+  forceMode2D: 0
+  forceMagnitude: 10
+  useInputDirection: 1
+  fixedDirection: {x: 1, y: 0}
+  preserveVerticalVelocity: 1
+  smoothTransition: 0
+  transitionSpeed: 10

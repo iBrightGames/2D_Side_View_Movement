@@ -10,10 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: AngularForceConfig 1
-  m_EditorClassIdentifier: Assembly-CSharp::AngularForceConfig
-  forceType: 1
-  forceMode2D: 1
-  forceMagnitude: 90
-  rotationDirection: 1
-  useInputForDirection: 1
+  m_Name: Button_Continuous
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonInputConfig
+  inputActionReference: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  inputType: 0
+  buttonDirection: {x: 0, y: 1}

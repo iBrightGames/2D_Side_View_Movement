@@ -1007,8 +1007,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 130264555}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 90773517546559e47bcdb7795b0d4b8d, type: 2}
-    movementConfig: {fileID: 11400000, guid: 42849170d3bdacc4cad7a36e348b1fda, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -1187,8 +1187,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 175177546}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: c0f61423f127ed54795b31ecb8ba222d, type: 2}
-    movementConfig: {fileID: 11400000, guid: 42849170d3bdacc4cad7a36e348b1fda, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -1994,7 +1994,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410938771}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -2082,8 +2082,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 410938774}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 90773517546559e47bcdb7795b0d4b8d, type: 2}
-    movementConfig: {fileID: 11400000, guid: e1d6b3b5d272f2642a23f6fd70e18192, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -2585,8 +2585,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 455098493}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 5e34ff1b8dbe14244a6755ecda2b9f31, type: 2}
-    movementConfig: {fileID: 11400000, guid: 337463f6dde942b4bbc1a958749fa071, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -3069,7 +3069,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &495597614
 Transform:
   m_ObjectHideFlags: 0
@@ -3887,7 +3887,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &682784060
 Transform:
   m_ObjectHideFlags: 0
@@ -4075,8 +4075,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 685122612}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 90773517546559e47bcdb7795b0d4b8d, type: 2}
-    movementConfig: {fileID: 11400000, guid: 337463f6dde942b4bbc1a958749fa071, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -4167,7 +4167,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 697179445}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -4255,8 +4255,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 697179448}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 5e34ff1b8dbe14244a6755ecda2b9f31, type: 2}
-    movementConfig: {fileID: 11400000, guid: b4c1d6038b88c6f49aa2fd5d8d39a94e, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -4569,8 +4569,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 739193414}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: c0f61423f127ed54795b31ecb8ba222d, type: 2}
-    movementConfig: {fileID: 11400000, guid: e1d6b3b5d272f2642a23f6fd70e18192, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -4883,8 +4883,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 783360127}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: c0f61423f127ed54795b31ecb8ba222d, type: 2}
-    movementConfig: {fileID: 11400000, guid: 337463f6dde942b4bbc1a958749fa071, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -5414,8 +5414,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 995469262}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 0064506f1411ba84e8f38eb7a8384479, type: 2}
-    movementConfig: {fileID: 11400000, guid: e1d6b3b5d272f2642a23f6fd70e18192, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -5594,8 +5594,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1002707232}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: c0f61423f127ed54795b31ecb8ba222d, type: 2}
-    movementConfig: {fileID: 11400000, guid: b4c1d6038b88c6f49aa2fd5d8d39a94e, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -5774,8 +5774,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1009630945}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 0064506f1411ba84e8f38eb7a8384479, type: 2}
-    movementConfig: {fileID: 11400000, guid: f656fb99389827840bbfd83d3477f571, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -6180,8 +6180,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1069741403}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 90773517546559e47bcdb7795b0d4b8d, type: 2}
-    movementConfig: {fileID: 11400000, guid: 42849170d3bdacc4cad7a36e348b1fda, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -6665,8 +6665,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1219122140}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: c0f61423f127ed54795b31ecb8ba222d, type: 2}
-    movementConfig: {fileID: 11400000, guid: c59a5326e30d5b94fa7f2ae43cbdda88, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -7247,8 +7247,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1416135706}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 0064506f1411ba84e8f38eb7a8384479, type: 2}
-    movementConfig: {fileID: 11400000, guid: b4c1d6038b88c6f49aa2fd5d8d39a94e, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -7427,8 +7427,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1476635321}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: c0f61423f127ed54795b31ecb8ba222d, type: 2}
-    movementConfig: {fileID: 11400000, guid: f656fb99389827840bbfd83d3477f571, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -7875,8 +7875,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1568192553}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 0064506f1411ba84e8f38eb7a8384479, type: 2}
-    movementConfig: {fileID: 11400000, guid: c59a5326e30d5b94fa7f2ae43cbdda88, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -8101,7 +8101,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1580420380}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -8189,8 +8189,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1580420383}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 5e34ff1b8dbe14244a6755ecda2b9f31, type: 2}
-    movementConfig: {fileID: 11400000, guid: e1d6b3b5d272f2642a23f6fd70e18192, type: 2}
+  - inputConfig: {fileID: 11400000, guid: 5aaec30ebad84b2428b8378d48b6432e, type: 2}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -8369,8 +8369,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1590297178}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 90773517546559e47bcdb7795b0d4b8d, type: 2}
-    movementConfig: {fileID: 11400000, guid: c59a5326e30d5b94fa7f2ae43cbdda88, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -8683,8 +8683,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1686095045}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 5e34ff1b8dbe14244a6755ecda2b9f31, type: 2}
-    movementConfig: {fileID: 11400000, guid: f656fb99389827840bbfd83d3477f571, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -8863,8 +8863,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1699122931}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 90773517546559e47bcdb7795b0d4b8d, type: 2}
-    movementConfig: {fileID: 11400000, guid: f656fb99389827840bbfd83d3477f571, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -9228,8 +9228,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1774263272}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 0064506f1411ba84e8f38eb7a8384479, type: 2}
-    movementConfig: {fileID: 11400000, guid: 337463f6dde942b4bbc1a958749fa071, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -9320,7 +9320,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1783914009}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -9408,8 +9408,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1783914012}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 90773517546559e47bcdb7795b0d4b8d, type: 2}
-    movementConfig: {fileID: 11400000, guid: b4c1d6038b88c6f49aa2fd5d8d39a94e, type: 2}
+  - inputConfig: {fileID: 11400000, guid: 5aaec30ebad84b2428b8378d48b6432e, type: 2}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -9588,8 +9588,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1790477657}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 5e34ff1b8dbe14244a6755ecda2b9f31, type: 2}
-    movementConfig: {fileID: 11400000, guid: c59a5326e30d5b94fa7f2ae43cbdda88, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
@@ -10743,8 +10743,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 2044513996}
   inputMovementBridges:
-  - inputConfig: {fileID: 11400000, guid: 0064506f1411ba84e8f38eb7a8384479, type: 2}
-    movementConfig: {fileID: 11400000, guid: 42849170d3bdacc4cad7a36e348b1fda, type: 2}
+  - inputConfig: {fileID: 0}
+    movementConfig: {fileID: 0}
     requiresGrounded: 0
     cooldown: 0
     lastExecutionTime: 0
