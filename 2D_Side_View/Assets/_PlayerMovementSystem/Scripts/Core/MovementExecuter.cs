@@ -6,7 +6,7 @@ using UnityEngine;
 
 public static class MovementExecuter
 {
-    public static void ExecuteMovement(Rigidbody2D rb, InputMovementBridge bridge, Vector2? inputDirection, bool showDebug = false)
+    public static void ExecuteMovement(Rigidbody2D rb, InputMovementBridge bridge, Vector2 inputDirection, bool showDebug = false)
     {
         var config = bridge.movementConfig;
 
@@ -16,21 +16,14 @@ public static class MovementExecuter
                 ApplyLinearForce(rb, config, inputDirection, showDebug);
                 break;
 
-            case ForceType.Angular:
-                ApplyAngularForce(rb, config, inputDirection, showDebug);
-                break;
-
-            case ForceType.Velocity:
-                ApplyVelocity(rb, config, inputDirection, showDebug);
-                break;
+           
         }
 
-        bridge.MarkExecuted();
     }
 
-    private static void ApplyLinearForce(Rigidbody2D rb, ForceConfig config, Vector2? inputDirection, bool showDebug)
+    private static void ApplyLinearForce(Rigidbody2D rb, ForceConfig config, Vector2 inputDirection, bool showDebug)
     {
-        Vector2 force = config.GetLinearDirection(inputDirection, rb.linearVelocity);
+        Vector2 force = config.forceMagnitude * inputDirection;
 
         if (showDebug)
         {
@@ -51,7 +44,7 @@ public static class MovementExecuter
 
     public static void ApplyAngularForce(Rigidbody2D rb, ForceConfig config, Vector2? inputDirection, bool showDebug)
     {
-        float torque = config.GetAngularMagnitude();
+        float torque = config.forceMagnitude;
 
         if (showDebug)
         {
@@ -67,9 +60,9 @@ public static class MovementExecuter
         }
     }
 
-    private static void ApplyVelocity(Rigidbody2D rb, ForceConfig config, Vector2? inputDirection, bool showDebug)
+    private static void ApplyVelocity(Rigidbody2D rb, ForceConfig config, Vector2 inputDirection, bool showDebug)
     {
-        Vector2 targetVelocity = config.GetLinearDirection(inputDirection, rb.linearVelocity);
+        Vector2 targetVelocity = config.forceMagnitude * inputDirection;
 
         if (showDebug)
         {

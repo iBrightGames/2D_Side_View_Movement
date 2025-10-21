@@ -111,8 +111,8 @@
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Interfaces\IGroupItem.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Nodes\Utility\RedirectNodeView.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Graphs\GraphDataUtils.cs" />
-    <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Drawing\Views\Slots\BooleanSlotControlView.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\ShaderGraphNodeValidationExtension.cs" />
+    <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Drawing\Views\Slots\BooleanSlotControlView.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Graphs\Vector3MaterialSlot.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Interfaces\IMayRequireDepthTexture.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Generation\Targets\PreviewTarget.cs" />
@@ -618,8 +618,8 @@
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Nodes\Input\Basic\Vector1Node.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Util\Identifier.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Nodes\Artistic\Normal\NormalFromTextureNode.cs" />
-    <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Graphs\GradientMaterialSlot.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Nodes\Utility\PreviewNode.cs" />
+    <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Graphs\GradientMaterialSlot.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Nodes\Input\Texture\SampleTexture2DLODNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Nodes\Procedural\Noise\GradientNoiseNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Graphs\SamplerStateShaderProperty.cs" />

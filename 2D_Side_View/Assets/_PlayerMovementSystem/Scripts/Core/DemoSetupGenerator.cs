@@ -1,4 +1,5 @@
 using System.Linq;
+using PlayerControlSystem;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class DemoSetupGenerator : MonoBehaviour
     [Range(1,10)] public int horizontalSpacing = 2;
     [Range(1,10)] public int vertcalSpacing = 2;
     public GameObject playerPrefab;
-    public InputConfig[] InputConfigs;
+    public PlayerInput[] playerInputs;
     public ForceConfig[] ForceConfigs;
 
     [Header("Line Settings")]
@@ -25,7 +26,7 @@ public class DemoSetupGenerator : MonoBehaviour
         h_startPoint = start;
         v_startPoint = start;
         h_endPoint = start;
-        h_endPoint.x += horizontalSpacing * InputConfigs.Count();
+        h_endPoint.x += horizontalSpacing * playerInputs.Count();
         v_endPoint = start;
         v_endPoint.y += vertcalSpacing * ForceConfigs.Count();
 
@@ -36,7 +37,7 @@ public class DemoSetupGenerator : MonoBehaviour
         EdgeCollider2D v_edge = lineObj.AddComponent<EdgeCollider2D>();
         v_edge.points = new Vector2[] { v_startPoint, v_endPoint };
         
-        foreach (var _ in InputConfigs)
+        foreach (var _ in playerInputs)
         {
             GameObject line = new GameObject($"VLine_");
             line.transform.parent = transform;
@@ -60,14 +61,14 @@ public class DemoSetupGenerator : MonoBehaviour
        
 
         int i = 0;
-        foreach (var input in InputConfigs)
+        foreach (var input in playerInputs)
         {
             int j = 0;
             foreach (var force in ForceConfigs)
             {
 
                 InputMovementBridge bridge = new InputMovementBridge();
-                bridge.inputConfig = input;
+                bridge.playerInput = input;
                 bridge.movementConfig = force;
                 GameObject p = Instantiate(playerPrefab, transform);
                 Vector3 pos = p.transform.position;
@@ -77,7 +78,7 @@ public class DemoSetupGenerator : MonoBehaviour
 
                 PlayerMovementController controller = p.GetComponent<PlayerMovementController>();
                 controller.inputMovementBridges.Add(bridge);
-                controller.Initialize();
+                // controller.Initialize();
 
                 j += 1;
             }

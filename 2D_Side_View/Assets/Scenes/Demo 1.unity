@@ -2834,18 +2834,14 @@ MonoBehaviour:
   horizontalSpacing: 10
   vertcalSpacing: 10
   playerPrefab: {fileID: 1700566231}
-  InputConfigs:
-  - {fileID: 11400000, guid: e1aa815a1a1250f4b9695d0cc78b660b, type: 2}
-  - {fileID: 11400000, guid: 83a400726cf8048409acb0fb7e67267c, type: 2}
-  - {fileID: 11400000, guid: d90604e8df3f08b49923e1ffe8961450, type: 2}
-  - {fileID: 11400000, guid: c7501cc7f58ffe84fb332336c2916a7a, type: 2}
+  playerInputs: []
   ForceConfigs:
-  - {fileID: 11400000, guid: 6eed585c31a189947b0e9b7400b774f5, type: 2}
-  - {fileID: 11400000, guid: 94d5f59084311e64d858da03cb40b3a0, type: 2}
-  - {fileID: 11400000, guid: c95bc3c66c978de4a93cb2b183b7d6d5, type: 2}
-  - {fileID: 11400000, guid: 32636a6035846d848b9c19f41371fd48, type: 2}
-  - {fileID: 11400000, guid: 1eab1c026f1df514e9ccb08ac87b9124, type: 2}
-  - {fileID: 11400000, guid: bc3ea5ae54ea7b54cbb1ea729852f633, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   v_startPoint: {x: 0, y: 0}
   v_endPoint: {x: 0, y: 0}
   h_startPoint: {x: 0, y: 0}
@@ -2898,13 +2894,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 1700566233}
-  inputMovementBridges: []
-  checkGrounded: 1
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  groundCheckOffset: {x: 0, y: 0}
-  groundCheckDistance: 0.1
+  inputMovementBridges:
+  - playerInput: {fileID: 11400000, guid: 2ba7797d0aa2df54887ab15c15c1d16d, type: 2}
+    movementConfig: {fileID: 11400000, guid: 6af3eb46b51cc264cb05a2f0f94dc200, type: 2}
   showDebugLogs: 1
 --- !u!50 &1700566233
 Rigidbody2D:

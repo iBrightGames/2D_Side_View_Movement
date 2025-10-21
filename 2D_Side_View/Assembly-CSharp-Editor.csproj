@@ -1221,6 +1221,7 @@
     <ProjectReference Include="PsdPlugin.csproj" />
     <ProjectReference Include="Unity.2D.Common.Editor.csproj" />
     <ProjectReference Include="Unity.2D.Common.Path.Editor.csproj" />
+    <ProjectReference Include="Unity.Recorder.csproj" />
     <ProjectReference Include="Unity.RenderPipeline.Universal.ShaderLibrary.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Universal.Shaders.csproj" />
     <ProjectReference Include="Unity.2D.IK.Editor.csproj" />
@@ -1242,8 +1243,10 @@
     <ProjectReference Include="VHierarchy.csproj" />
     <ProjectReference Include="Unity.InternalAPIEditorBridge.001.csproj" />
     <ProjectReference Include="Unity.2D.Animation.Editor.csproj" />
+    <ProjectReference Include="Unity.Bindings.OpenImageIO.Editor.csproj" />
     <ProjectReference Include="Unity.Collections.csproj" />
     <ProjectReference Include="PPv2URPConverters.csproj" />
+    <ProjectReference Include="Unity.Recorder.Base.csproj" />
     <ProjectReference Include="Unity.2D.PixelPerfect.Editor.csproj" />
     <ProjectReference Include="Unity.Rendering.LightTransport.Editor.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Core.csproj" />
@@ -1274,9 +1277,10 @@
     <ProjectReference Include="Unity.2D.SpriteShape.Editor.csproj" />
     <ProjectReference Include="Unity.2D.Sprite.Editor.csproj" />
     <ProjectReference Include="Unity.2D.Psdimporter.Editor.csproj" />
-    <ProjectReference Include="Unity.TextMeshPro.Editor.csproj" />
+    <ProjectReference Include="Unity.Recorder.Editor.csproj" />
     <ProjectReference Include="Unity.Burst.Editor.csproj" />
     <ProjectReference Include="Unity.2D.PixelPerfect.csproj" />
+    <ProjectReference Include="Unity.TextMeshPro.Editor.csproj" />
     <ProjectReference Include="Unity.Burst.csproj" />
     <ProjectReference Include="Unity.VisualStudio.Editor.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Core.Runtime.csproj" />

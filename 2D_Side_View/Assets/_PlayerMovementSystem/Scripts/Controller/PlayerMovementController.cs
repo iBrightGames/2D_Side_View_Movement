@@ -1,9 +1,7 @@
-// ============================================
-// PLAYER MOVEMENT CONTROLLER
-// ============================================
-
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using PlayerControlSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovementController : MonoBehaviour
@@ -14,162 +12,173 @@ public class PlayerMovementController : MonoBehaviour
     [Header("Movement Configuration")]
     [SerializeField] public List<InputMovementBridge> inputMovementBridges;
 
-    [Header("Ground Detection")]
-    [SerializeField] private bool checkGrounded = true;
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Vector2 groundCheckOffset = Vector2.zero;
-    [SerializeField] private float groundCheckDistance = 0.1f;
-
     [Header("Debug")]
     [SerializeField] private bool showDebugLogs = false;
 
-    private bool isGrounded;
+    // Input state
+    private Dictionary<(InputMovementBridge, UserInput), float> holdTimers = new();
+    private Dictionary<(InputMovementBridge, UserInput), int> clickCounters = new();
 
     void Awake()
     {
-        if (rb == null)
-        {
-            rb = GetComponent<Rigidbody2D>();
-        }
-
-        if (showDebugLogs)
-        {
-            Debug.Log($"[Movement] Awake - Rigidbody2D: {rb != null}, Bridges: {inputMovementBridges.Count}");
-        }
-        Initialize();
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
     }
 
-    public void Initialize()
+    void FixedUpdate()
     {
         foreach (var bridge in inputMovementBridges)
         {
-            if (bridge.inputConfig == null) continue;
+            if (bridge.playerInput == null) continue;
 
-            bridge.inputConfig.Initialize();
-
-            // Triggered input'lar için event subscribe
-            if (bridge.inputConfig.inputType == InputType.Triggered)
+            foreach (var input in bridge.playerInput.userInputs)
             {
-                var action = bridge.inputConfig.inputActionReference.action;
-                action.performed += ctx => OnTriggeredInput(bridge);
+                bool isDown = CheckInputDown(bridge.playerInput, input);
+                Vector2 dir;
 
-                if (showDebugLogs)
+                if (CheckTrigger(bridge, input, bridge.playerInput.TriggerType, isDown))
                 {
-                    Debug.Log($"[Movement] Subscribed to triggered input: {action.name}");
+                    dir = GetDirection(input);
+                    MovementExecuter.ExecuteMovement(rb, bridge, dir, showDebugLogs);
                 }
+
             }
         }
     }
 
-    private void OnDisable()
+    private bool CheckInputDown(PlayerControlSystem.PlayerInput playerInput, UserInput userInput)
     {
-        foreach (var bridge in inputMovementBridges)
+        if (playerInput.DeviceType == InputDeviceType.Keyboard)
         {
-            if (bridge.inputConfig == null) continue;
-
-            if (bridge.inputConfig.inputType == InputType.Triggered)
+            foreach (var key in userInput.keyCode)
             {
-                var action = bridge.inputConfig.inputActionReference.action;
-                action.performed -= ctx => OnTriggeredInput(bridge);
+                if (Keyboard.current[key]?.isPressed == true) return true;
             }
-
-            bridge.inputConfig.Cleanup();
         }
+        else if (playerInput.DeviceType == InputDeviceType.Mouse)
+        {
+            foreach (var btn in userInput.mouseButton)
+            {
+                if (Mouse.current[btn.ToString()]?.IsPressed() == true) return true;
+            }
+        }
+
+        return false;
     }
 
-    private void Update()
+    private Vector2 GetDirection(UserInput input)
     {
-        // Ground check
-        if (checkGrounded)
+        float value = input.polarity == InputPolarity.Positive ? 1f : -1f;
+        return input.axis == InputAxis.Horizontal ? new Vector2(value, 0) : new Vector2(0, value);
+    }
+
+    private bool CheckTrigger(InputMovementBridge bridge, UserInput input, InputTriggerType trigger, bool isDown)
+    {
+        var key = (bridge, input);
+
+        switch (trigger)
         {
-            CheckGrounded();
-        }
-
-        // Continuous input'ları işle (Update'te oku, FixedUpdate'te uygula)
-        foreach (var bridge in inputMovementBridges)
-        {
-            if (bridge.inputConfig == null) continue;
-
-            if (bridge.inputConfig.inputType == InputType.Continuous)
-            {
-                Vector2? inputDir = bridge.inputConfig.GetDirection();
-
-                if (inputDir.HasValue && inputDir.Value != Vector2.zero)
+            case InputTriggerType.Pressed:
+                if (isDown && !holdTimers.ContainsKey(key))
                 {
-                    if (bridge.CanExecute(isGrounded))
+                    holdTimers[key] = 0f;
+                    return true;
+                }
+                if (!isDown) holdTimers.Remove(key);
+                break;
+
+            case InputTriggerType.Released:
+                if (holdTimers.ContainsKey(key) && !isDown)
+                {
+                    holdTimers.Remove(key);
+                    return true;
+                }
+                if (isDown && !holdTimers.ContainsKey(key)) holdTimers[key] = 0f;
+                break;
+
+            case InputTriggerType.Held:
+                return isDown;
+
+            case InputTriggerType.LongPress:
+                if (isDown)
+                {
+                    if (!holdTimers.ContainsKey(key)) holdTimers[key] = 0f;
+                    holdTimers[key] += Time.fixedDeltaTime;
+                    if (holdTimers[key] >= bridge.playerInput.PressDuration)
                     {
-                        if (showDebugLogs)
-                        {
-                            Debug.Log($"[Continuous] Input: {inputDir.Value}");
-                        }
+                        holdTimers[key] = 0f;
+                        return true;
                     }
                 }
-            }
-        }
-    }
+                else holdTimers.Remove(key);
+                break;
 
-    private void FixedUpdate()
-    {
-        // Continuous movement'ları uygula
-        foreach (var bridge in inputMovementBridges)
-        {
-            if (bridge.inputConfig == null) continue;
-
-            if (bridge.inputConfig.inputType == InputType.Continuous)
-            {
-                Vector2? inputDir = bridge.inputConfig.GetDirection();
-
-                if (inputDir.HasValue && inputDir.Value != Vector2.zero)
+            case InputTriggerType.MultiClick:
+                if (isDown)
                 {
-                    if (bridge.CanExecute(isGrounded))
+                    if (!clickCounters.ContainsKey(key)) clickCounters[key] = 1;
+                    else clickCounters[key] += 1;
+
+                    if (clickCounters[key] >= bridge.playerInput.ClickCount)
                     {
-                        MovementExecuter.ExecuteMovement(rb, bridge, inputDir, showDebugLogs);
+                        clickCounters[key] = 0;
+                        return true;
                     }
                 }
-            }
-        }
-    }
-
-    private void OnTriggeredInput(InputMovementBridge bridge)
-    {
-        if (!bridge.CanExecute(isGrounded))
-        {
-            if (showDebugLogs)
-            {
-                Debug.Log($"[Triggered] Movement blocked - Grounded: {isGrounded}, Cooldown active");
-            }
-            return;
+                else clickCounters.Remove(key);
+                break;
         }
 
-        Vector2? inputDir = bridge.inputConfig.GetDirection();
-
-        if (showDebugLogs)
-        {
-            Debug.Log($"[Triggered] Input received - Direction: {inputDir}");
-        }
-
-        MovementExecuter.ExecuteMovement(rb, bridge, inputDir, showDebugLogs);
-    }
-
-    private void CheckGrounded()
-    {
-        Vector2 checkPosition = (Vector2)transform.position + groundCheckOffset;
-        isGrounded = Physics2D.Raycast(checkPosition, Vector2.down, groundCheckDistance, groundLayer);
-
-        if (showDebugLogs)
-        {
-            Debug.DrawRay(checkPosition, Vector2.down * groundCheckDistance, isGrounded ? Color.green : Color.red);
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (!checkGrounded) return;
-
-        Vector2 checkPosition = (Vector2)transform.position + groundCheckOffset;
-        Gizmos.color = isGrounded ? Color.green : Color.red;
-        Gizmos.DrawLine(checkPosition, checkPosition + Vector2.down * groundCheckDistance);
-        Gizmos.DrawWireSphere(checkPosition + Vector2.down * groundCheckDistance, 0.1f);
+        return false;
     }
 }
+
+// // ============================================
+// // PLAYER MOVEMENT CONTROLLER
+// // ============================================
+
+// using System.Collections.Generic;
+// using UnityEngine;
+// using PlayerControlSystem;
+
+// [RequireComponent(typeof(Rigidbody2D))]
+// public class PlayerMovementController : MonoBehaviour
+// {
+//     [Header("References")]
+//     [SerializeField] private Rigidbody2D rb;
+
+//     [Header("Movement Configuration")]
+//     [SerializeField] public List<InputMovementBridge> inputMovementBridges;
+
+
+//     [Header("Debug")]
+//     [SerializeField] private bool showDebugLogs = false;
+
+
+//     void Awake()
+//     {
+//         if (rb == null)
+//         {
+//             rb = GetComponent<Rigidbody2D>();
+//         }
+
+//         if (showDebugLogs)
+//         {
+//             Debug.Log($"[Movement] Awake - Rigidbody2D: {rb != null}, Bridges: {inputMovementBridges.Count}");
+//         }
+//     }
+
+//     private void FixedUpdate()
+//     {
+//         foreach (var bridge in inputMovementBridges)
+//         {
+//             if (bridge.playerInput == null) continue;
+//             foreach (var input in bridge.playerInput.userInputs)
+//             {
+//                 Vector2 dir = input.GetDirection();
+//                 MovementExecuter.ExecuteMovement(rb, bridge, dir, showDebugLogs);
+//             }
+//         }
+//     }
+
+// }
 
