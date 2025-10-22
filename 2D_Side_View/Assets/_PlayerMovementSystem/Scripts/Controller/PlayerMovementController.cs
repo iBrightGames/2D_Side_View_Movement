@@ -1,184 +1,110 @@
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using PlayerControlSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMovementController : MonoBehaviour
+namespace PlayerControlSystem
 {
-    [Header("References")]
-    [SerializeField] private Rigidbody2D rb;
 
-    [Header("Movement Configuration")]
-    [SerializeField] public List<InputMovementBridge> inputMovementBridges;
-
-    [Header("Debug")]
-    [SerializeField] private bool showDebugLogs = false;
-
-    // Input state
-    private Dictionary<(InputMovementBridge, UserInput), float> holdTimers = new();
-    private Dictionary<(InputMovementBridge, UserInput), int> clickCounters = new();
-
-    void Awake()
+    [RequireComponent(typeof(Rigidbody2D))]
+    public class PlayerMovementController : MonoBehaviour
     {
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-    }
+        [Header("References")]
+        [SerializeField] private Rigidbody2D rb;
 
-    void FixedUpdate()
-    {
-        foreach (var bridge in inputMovementBridges)
+        [Header("Movement Configuration")]
+        [SerializeField] public List<InputMovementBridge> inputMovementBridges;
+
+        [Header("Debug")]
+        [SerializeField] private bool showDebugLogs = false;
+
+        // Event handler tracking
+        private Dictionary<UserInput, System.Action<InputAction.CallbackContext>> eventHandlers
+            = new Dictionary<UserInput, System.Action<InputAction.CallbackContext>>();
+
+        void Awake()
         {
-            if (bridge.playerInput == null) continue;
-
-            foreach (var input in bridge.playerInput.userInputs)
+            if (rb == null)
             {
-                bool isDown = CheckInputDown(bridge.playerInput, input);
-                Vector2 dir;
+                rb = GetComponent<Rigidbody2D>();
+            }
 
-                if (CheckTrigger(bridge, input, bridge.playerInput.TriggerType, isDown))
+            InitializeInputs();
+        }
+
+        private void InitializeInputs()
+        {
+            foreach (var bridge in inputMovementBridges)
+            {
+                if (bridge.playerInput == null) continue;
+
+
+                if (bridge.playerInput.action == null) continue;
+
+                var action = bridge.playerInput.action.action;
+
+                // Enable action
+                if (!action.enabled)
                 {
-                    dir = GetDirection(input);
-                    MovementExecuter.ExecuteMovement(rb, bridge, dir, showDebugLogs);
+                    action.Enable();
                 }
 
+                // Handler oluştur (bridge'i closure ile yakala)
+                System.Action<InputAction.CallbackContext> handler = ctx =>
+                {
+                    OnInputEvent(bridge, bridge.playerInput, ctx);
+                };
+
+                eventHandlers[bridge.playerInput] = handler;
+
+                // Tüm event'lere subscribe ol
+                action.started += handler;
+                action.performed += handler;
+                action.canceled += handler;
+
+                if (showDebugLogs)
+                {
+                    Debug.Log($"[Input] Subscribed: {action.name}");
+                }
             }
         }
-    }
 
-    private bool CheckInputDown(PlayerControlSystem.PlayerInput playerInput, UserInput userInput)
-    {
-        if (playerInput.DeviceType == InputDeviceType.Keyboard)
+
+
+        private void OnInputEvent(InputMovementBridge bridge, UserInput userInput, InputAction.CallbackContext ctx)
         {
-            foreach (var key in userInput.keyCode)
+            if (showDebugLogs)
             {
-                if (Keyboard.current[key]?.isPressed == true) return true;
+                Debug.Log($"[Input] Event: {ctx.phase}, Action: {ctx.action.name}");
             }
+
+            // Movement uygula
+            MovementExecuter.ExecuteMovement(rb, userInput, bridge, showDebugLogs);
         }
-        else if (playerInput.DeviceType == InputDeviceType.Mouse)
+
+        private void OnDisable()
         {
-            foreach (var btn in userInput.mouseButton)
+            foreach (var pair in eventHandlers)
             {
-                if (Mouse.current[btn.ToString()]?.IsPressed() == true) return true;
+                var userInput = pair.Key;
+                var handler = pair.Value;
+
+                if (userInput.action == null) continue;
+                var action = userInput.action.action;
+
+                // Unsubscribe
+                action.started -= handler;
+                action.performed -= handler;
+                action.canceled -= handler;
+
+                action.Disable();
             }
+
+            eventHandlers.Clear();
         }
 
-        return false;
+
     }
 
-    private Vector2 GetDirection(UserInput input)
-    {
-        float value = input.polarity == InputPolarity.Positive ? 1f : -1f;
-        return input.axis == InputAxis.Horizontal ? new Vector2(value, 0) : new Vector2(0, value);
-    }
 
-    private bool CheckTrigger(InputMovementBridge bridge, UserInput input, InputTriggerType trigger, bool isDown)
-    {
-        var key = (bridge, input);
-
-        switch (trigger)
-        {
-            case InputTriggerType.Pressed:
-                if (isDown && !holdTimers.ContainsKey(key))
-                {
-                    holdTimers[key] = 0f;
-                    return true;
-                }
-                if (!isDown) holdTimers.Remove(key);
-                break;
-
-            case InputTriggerType.Released:
-                if (holdTimers.ContainsKey(key) && !isDown)
-                {
-                    holdTimers.Remove(key);
-                    return true;
-                }
-                if (isDown && !holdTimers.ContainsKey(key)) holdTimers[key] = 0f;
-                break;
-
-            case InputTriggerType.Held:
-                return isDown;
-
-            case InputTriggerType.LongPress:
-                if (isDown)
-                {
-                    if (!holdTimers.ContainsKey(key)) holdTimers[key] = 0f;
-                    holdTimers[key] += Time.fixedDeltaTime;
-                    if (holdTimers[key] >= bridge.playerInput.PressDuration)
-                    {
-                        holdTimers[key] = 0f;
-                        return true;
-                    }
-                }
-                else holdTimers.Remove(key);
-                break;
-
-            case InputTriggerType.MultiClick:
-                if (isDown)
-                {
-                    if (!clickCounters.ContainsKey(key)) clickCounters[key] = 1;
-                    else clickCounters[key] += 1;
-
-                    if (clickCounters[key] >= bridge.playerInput.ClickCount)
-                    {
-                        clickCounters[key] = 0;
-                        return true;
-                    }
-                }
-                else clickCounters.Remove(key);
-                break;
-        }
-
-        return false;
-    }
 }
-
-// // ============================================
-// // PLAYER MOVEMENT CONTROLLER
-// // ============================================
-
-// using System.Collections.Generic;
-// using UnityEngine;
-// using PlayerControlSystem;
-
-// [RequireComponent(typeof(Rigidbody2D))]
-// public class PlayerMovementController : MonoBehaviour
-// {
-//     [Header("References")]
-//     [SerializeField] private Rigidbody2D rb;
-
-//     [Header("Movement Configuration")]
-//     [SerializeField] public List<InputMovementBridge> inputMovementBridges;
-
-
-//     [Header("Debug")]
-//     [SerializeField] private bool showDebugLogs = false;
-
-
-//     void Awake()
-//     {
-//         if (rb == null)
-//         {
-//             rb = GetComponent<Rigidbody2D>();
-//         }
-
-//         if (showDebugLogs)
-//         {
-//             Debug.Log($"[Movement] Awake - Rigidbody2D: {rb != null}, Bridges: {inputMovementBridges.Count}");
-//         }
-//     }
-
-//     private void FixedUpdate()
-//     {
-//         foreach (var bridge in inputMovementBridges)
-//         {
-//             if (bridge.playerInput == null) continue;
-//             foreach (var input in bridge.playerInput.userInputs)
-//             {
-//                 Vector2 dir = input.GetDirection();
-//                 MovementExecuter.ExecuteMovement(rb, bridge, dir, showDebugLogs);
-//             }
-//         }
-//     }
-
-// }
-

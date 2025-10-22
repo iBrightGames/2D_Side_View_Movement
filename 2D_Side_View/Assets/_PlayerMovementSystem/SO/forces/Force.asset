@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: Force
   m_EditorClassIdentifier: 
   forceType: 0
-  forceMode2D: 0
   forceMagnitude: 10

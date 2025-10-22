@@ -65,7 +65,9 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Editor\PlayerInputEditor.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Editor\CustomMovementDataEditor.cs" />
+    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Editor\UserInputDrawer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Library\PackageCache\com.unity.collab-proxy@ab839cc7d2ad\Lib\Editor\Localization\commontypes.ko.txt" />

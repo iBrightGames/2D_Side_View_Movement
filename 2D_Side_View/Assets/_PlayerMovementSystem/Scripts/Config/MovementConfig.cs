@@ -1,21 +1,20 @@
-// ============================================
-// FORCE CONFIGS
-// ============================================
-
 using UnityEngine;
 
-public enum ForceType
-{
-    Linear
-}
-[CreateAssetMenu(fileName ="Force", menuName ="Force")]
 
-public class ForceConfig : ScriptableObject
-{
-    [Header("Force Settings")]
-    public ForceType forceType;
-    public ForceMode2D forceMode2D = ForceMode2D.Force;
-    public float forceMagnitude = 10f;
-    
+// namespace PlayerControlSystem
+// {
 
-}
+
+//     [CreateAssetMenu(fileName = "ForceConfig", menuName = "Movement/ForceConfig")]
+//     public class ForceConfig : ScriptableObject
+//     {
+//         [Header("Force Type")]
+//         public ForceType forceType;
+
+//         [Header("Magnitude")]
+//         public float forceMagnitude = 10f;
+
+
+//     }
+// }
+

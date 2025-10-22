@@ -1,80 +1,92 @@
-// ============================================
-// MOVEMENT EXECUTOR
-// ============================================
-
 using UnityEngine;
 
-public static class MovementExecuter
+namespace PlayerControlSystem
 {
-    public static void ExecuteMovement(Rigidbody2D rb, InputMovementBridge bridge, Vector2 inputDirection, bool showDebug = false)
+    public static class MovementExecuter
     {
-        var config = bridge.movementConfig;
-
-        switch (config.forceType)
+        public static void ExecuteMovement(Rigidbody2D rb,UserInput userInput, InputMovementBridge bridge,  bool showDebug = false)
         {
-            case ForceType.Linear:
-                ApplyLinearForce(rb, config, inputDirection, showDebug);
-                break;
+            var config = bridge.movementConfig;
 
-           
+            switch (config.forceType)
+            {
+                case ForceType.AddForce:
+                    ApplyAddForce(rb, bridge.CalculateLinearForce(userInput), showDebug);
+                    break;
+
+                case ForceType.AddImpulse:
+                    ApplyAddImpulse(rb, bridge.CalculateLinearForce(userInput), showDebug);
+                    break;
+
+                case ForceType.AddTorque:
+                    ApplyAddTorque(rb, bridge.CalculateAngularForce(userInput), showDebug);
+                    break;
+
+                case ForceType.AddAngularImpulse:
+                    ApplyAddAngularImpulse(rb, bridge.CalculateAngularForce(userInput), showDebug);
+                    break;
+
+                case ForceType.SetVelocity:
+                    ApplySetVelocity(rb, bridge.CalculateVelocity(userInput), showDebug);
+                    break;
+            }
         }
 
-    }
-
-    private static void ApplyLinearForce(Rigidbody2D rb, ForceConfig config, Vector2 inputDirection, bool showDebug)
-    {
-        Vector2 force = config.forceMagnitude * inputDirection;
-
-        if (showDebug)
+        private static void ApplyAddForce(Rigidbody2D rb,  Vector2 force, bool showDebug)
         {
-            Debug.Log($"[Linear Force] Direction: {force}, Magnitude: {force.magnitude}, Mode: {config.forceMode2D}");
-            Debug.Log($"[Before] Velocity: {rb.linearVelocity}");
+
+            if (force != Vector2.zero)
+            {
+                rb.AddForce(force, ForceMode2D.Force);
+
+                if (showDebug)
+                    Debug.Log($"[AddForce] Force: {force}, Velocity: {rb.linearVelocity}");
+            }
         }
 
-        if (force != Vector2.zero)
+        private static void ApplyAddImpulse(Rigidbody2D rb,  Vector2 impulse, bool showDebug)
         {
-            rb.AddForce(force, config.forceMode2D);
+
+            if (impulse != Vector2.zero)
+            {
+                rb.AddForce(impulse, ForceMode2D.Impulse);
+
+                if (showDebug)
+                    Debug.Log($"[AddImpulse] Impulse: {impulse}, Velocity: {rb.linearVelocity}");
+            }
         }
 
-        if (showDebug)
+        private static void ApplyAddTorque(Rigidbody2D rb, float torque, bool showDebug)
         {
-            Debug.Log($"[After] Velocity: {rb.linearVelocity}");
-        }
-    }
 
-    public static void ApplyAngularForce(Rigidbody2D rb, ForceConfig config, Vector2? inputDirection, bool showDebug)
-    {
-        float torque = config.forceMagnitude;
+            if (torque != 0f)
+            {
+                rb.AddTorque(torque, ForceMode2D.Force);
 
-        if (showDebug)
-        {
-            Debug.Log($"[Angular Force] Torque: {torque}");
-            Debug.Log($"[Before] AngularVelocity: {rb.angularVelocity}");
+                if (showDebug)
+                    Debug.Log($"[AddTorque] Torque: {torque}, AngularVelocity: {rb.angularVelocity}");
+            }
         }
 
-        rb.AddTorque(torque, config.forceMode2D);
-
-        if (showDebug)
+        private static void ApplyAddAngularImpulse(Rigidbody2D rb, float torque, bool showDebug)
         {
-            Debug.Log($"[After] AngularVelocity: {rb.angularVelocity}");
-        }
-    }
 
-    private static void ApplyVelocity(Rigidbody2D rb, ForceConfig config, Vector2 inputDirection, bool showDebug)
-    {
-        Vector2 targetVelocity = config.forceMagnitude * inputDirection;
+            if (torque != 0f)
+            {
+                rb.AddTorque(torque, ForceMode2D.Impulse);
 
-        if (showDebug)
-        {
-            Debug.Log($"[Velocity] Target: {targetVelocity}");
-            Debug.Log($"[Before] Velocity: {rb.linearVelocity}");
+                if (showDebug)
+                    Debug.Log($"[AddAngularImpulse] Torque: {torque}, AngularVelocity: {rb.angularVelocity}");
+            }
         }
 
-        rb.linearVelocity = targetVelocity;
-
-        if (showDebug)
+        private static void ApplySetVelocity(Rigidbody2D rb,  Vector2 velocity, bool showDebug)
         {
-            Debug.Log($"[After] Velocity: {rb.linearVelocity}");
+
+            rb.linearVelocity = velocity;
+
+            if (showDebug)
+                Debug.Log($"[SetVelocity] New Velocity: {velocity}");
         }
     }
 }

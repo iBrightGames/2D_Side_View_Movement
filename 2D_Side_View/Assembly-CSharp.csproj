@@ -66,20 +66,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\DemoSetupGenerator.cs" />
-    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\PlayerInputEditor.cs" />
+    <Compile Include="Assets\_StateMachine\ForceToCategoryBridge.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\InputMovementBridge.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Config\MovementConfig.cs" />
+    <Compile Include="Assets\_SpriteAnimation\spriteDatabaseAnimation.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Core\Enums.cs" />
-    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\PlayerInputManager.cs" />
-    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\CustomInputSystem.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Core\DoTMover.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\MovementExecuter.cs" />
+    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Config\CustomInputSystem.cs" />
     <Compile Include="Assets\InputSystem_Actions.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Config\MovementDataSO.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Controller\PlayerMovementController.cs" />
+    <Compile Include="Assets\_StateMachine\PlayerStateController.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\Enums.cs" />
-    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\UserInputDrawer.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Controller\MovementController.cs" />
+    <Compile Include="Assets\_SpriteAnimation\SpriteDatabaseEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
