@@ -38,6 +38,10 @@ namespace PlayerControlSystem
             if (force != Vector2.zero)
             {
                 rb.AddForce(force, ForceMode2D.Force);
+                rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity,100);
+                rb.linearDamping = 1f; // sürtünme ekle
+
+
 
                 if (showDebug)
                     Debug.Log($"[AddForce] Force: {force}, Velocity: {rb.linearVelocity}");

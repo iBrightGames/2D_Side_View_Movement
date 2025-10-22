@@ -106,6 +106,27 @@ MonoBehaviour:
       m_SpriteOverride: {fileID: 21300000, guid: 5b812e93c05ea4345a5924253cee070b, type: 3}
     m_FromMain: 0
     m_EntryOverrideCount: 3
+  - m_Name: Attack
+    m_Hash: 7088141
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: penguin_atack_01
+      m_Hash: 521423759
+      m_Sprite: {fileID: 21300000, guid: 6059ad9a67fda844aa2d256b0f868934, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 6059ad9a67fda844aa2d256b0f868934, type: 3}
+    - m_Name: penguin_atack_02
+      m_Hash: 102570549
+      m_Sprite: {fileID: 21300000, guid: 0dda9efeece02c3488735399dbffb0cd, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 0dda9efeece02c3488735399dbffb0cd, type: 3}
+    - m_Name: penguin_atack_03
+      m_Hash: 823798435
+      m_Sprite: {fileID: 21300000, guid: 3aa8bb72e976c5c4bbe8f41513c4df8f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 3aa8bb72e976c5c4bbe8f41513c4df8f, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
   m_PrimaryLibraryGUID: 
-  m_ModificationHash: 638967316113401046
+  m_ModificationHash: 638967436789831069
   m_Version: 1

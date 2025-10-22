@@ -57,17 +57,19 @@ public class CharacterController : MonoBehaviour
 
     private void OnInputEvent(ForceToCategoryBridge bridge, InputAction.CallbackContext ctx)
     {
-        if (ctx.canceled)
-            sprite.SetCategory(defaultCategory);
-        else
-            sprite.SetCategory(bridge.categoryName);
+        // if (ctx.canceled)
+        //     sprite.SetCategory(defaultCategory);
+        // else
+        //     sprite.SetCategory(bridge.categoryName);
 
         if (ctx.performed || ctx.started)
+            sprite.SetCategory(bridge.categoryName);
+        
             UpdateFlip(bridge.playerInput.GetDirection());
+        Debug.Log($"Jump event: {ctx.phase}, category: {bridge.categoryName}");
+
     }
 
-
-    
 
     private void OnDisable()
     {

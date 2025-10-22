@@ -14,9 +14,13 @@ namespace PlayerControlSystem
 
         [Header("Movement Configuration")]
         [SerializeField] public List<InputMovementBridge> inputMovementBridges;
+        private bool isMoving = false;
+
 
         [Header("Debug")]
         [SerializeField] private bool showDebugLogs = false;
+
+        private List<InputMovementBridge> activeBridges = new List<InputMovementBridge>();
 
         // Event handler tracking
         private Dictionary<UserInput, System.Action<InputAction.CallbackContext>> eventHandlers
@@ -52,7 +56,7 @@ namespace PlayerControlSystem
                 // Handler oluştur (bridge'i closure ile yakala)
                 System.Action<InputAction.CallbackContext> handler = ctx =>
                 {
-                    OnInputEvent(bridge, bridge.playerInput, ctx);
+                    OnInputEvent(bridge, ctx);
                 };
 
                 eventHandlers[bridge.playerInput] = handler;
@@ -71,16 +75,37 @@ namespace PlayerControlSystem
 
 
 
-        private void OnInputEvent(InputMovementBridge bridge, UserInput userInput, InputAction.CallbackContext ctx)
-        {
-            if (showDebugLogs)
-            {
-                Debug.Log($"[Input] Event: {ctx.phase}, Action: {ctx.action.name}");
-            }
+        // private void OnInputEvent(InputMovementBridge bridge, UserInput userInput, InputAction.CallbackContext ctx)
+        // {
+        //     if (showDebugLogs)
+        //     {
+        //         Debug.Log($"[Input] Event: {ctx.phase}, Action: {ctx.action.name}");
+        //     }
 
-            // Movement uygula
-            MovementExecuter.ExecuteMovement(rb, userInput, bridge, showDebugLogs);
+        //     // Movement uygula
+        //     MovementExecuter.ExecuteMovement(rb, userInput, bridge, showDebugLogs);
+        // }
+
+
+
+
+        private void OnInputEvent(InputMovementBridge bridge, InputAction.CallbackContext ctx)
+        {
+            if (ctx.performed && !activeBridges.Contains(bridge))
+                activeBridges.Add(bridge);
+            else if (ctx.canceled)
+                activeBridges.Remove(bridge);
         }
+
+
+        private void FixedUpdate()
+        {
+            foreach (var bridge in activeBridges)
+                MovementExecuter.ExecuteMovement(rb, bridge.playerInput, bridge, showDebugLogs);
+        }
+
+
+
 
         private void OnDisable()
         {

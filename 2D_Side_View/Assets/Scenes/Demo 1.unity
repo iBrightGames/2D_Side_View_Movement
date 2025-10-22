@@ -2844,6 +2844,8 @@ MonoBehaviour:
     movementConfig: {fileID: 11400000, guid: 6af3eb46b51cc264cb05a2f0f94dc200, type: 2}
   - playerInput: {fileID: 11400000, guid: f0e35d2a80b1d0c488580287b14c09ab, type: 2}
     movementConfig: {fileID: 11400000, guid: 6af3eb46b51cc264cb05a2f0f94dc200, type: 2}
+  - playerInput: {fileID: 11400000, guid: cc8e07ee6f5d7e949b88ae860f3ece5a, type: 2}
+    movementConfig: {fileID: 11400000, guid: a31f0a1e8ea1b5544ab0ba45b43be7f9, type: 2}
   showDebugLogs: 1
 --- !u!50 &1700566233
 Rigidbody2D:
@@ -3040,6 +3042,8 @@ MonoBehaviour:
   sprite: {fileID: 1700566237}
   forceToCategoryBridges:
   - {fileID: 11400000, guid: c0f040e276cbb724d82141d5b3fae3dc, type: 2}
+  - {fileID: 11400000, guid: 92542bf125c0bef42a50b85cf19d705b, type: 2}
+  - {fileID: 11400000, guid: abf78d04ac182fa418f29da1060f9b40, type: 2}
   spriteRenderer: {fileID: 1700566234}
   defaultCategory: Idle
 --- !u!1 &1858031228
