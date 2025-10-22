@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ForceConfig 1
   m_EditorClassIdentifier: 
   forceType: 1
-  forceMagnitude: 3
+  forceMagnitude: 2

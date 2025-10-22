@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 724f4d7d4cb1af84aa830ca0520064a8, type: 3}
   m_Name: New Force To Category Bridge 2
   m_EditorClassIdentifier: 
-  playerInput: {fileID: 0}
-  categoryName: 
+  playerInput: {fileID: 11400000, guid: cc8e07ee6f5d7e949b88ae860f3ece5a, type: 2}
+  categoryName: Attack
