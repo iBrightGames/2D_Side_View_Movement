@@ -69,6 +69,8 @@
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\InputMovementBridge.cs" />
     <Compile Include="Assets\_SpriteAnimation\spriteDatabaseAnimation.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Core\Enums.cs" />
+    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\Interfaces.cs" />
+    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\PlayerStateMachine.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Core\DoTMover.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\MovementExecuter.cs" />
     <Compile Include="Assets\InputSystem_Actions.cs" />
