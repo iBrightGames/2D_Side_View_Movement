@@ -4,7 +4,7 @@ namespace PlayerControlSystem
 {
     public static class MovementExecuter
     {
-        public static void ExecuteMovement(Rigidbody2D rb,UserInput userInput, InputMovementBridge bridge,  bool showDebug = false)
+        public static void ExecuteMovement(Rigidbody2D rb, UserInput userInput, InputMovementBridge bridge, bool showDebug = false)
         {
             var config = bridge.movementConfig;
 
@@ -32,13 +32,13 @@ namespace PlayerControlSystem
             }
         }
 
-        private static void ApplyAddForce(Rigidbody2D rb,  Vector2 force, bool showDebug)
+        private static void ApplyAddForce(Rigidbody2D rb, Vector2 force, bool showDebug)
         {
 
             if (force != Vector2.zero)
             {
                 rb.AddForce(force, ForceMode2D.Force);
-                rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity,100);
+                rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, 100);
                 rb.linearDamping = 1f; // sürtünme ekle
 
 
@@ -48,7 +48,7 @@ namespace PlayerControlSystem
             }
         }
 
-        private static void ApplyAddImpulse(Rigidbody2D rb,  Vector2 impulse, bool showDebug)
+        private static void ApplyAddImpulse(Rigidbody2D rb, Vector2 impulse, bool showDebug)
         {
 
             if (impulse != Vector2.zero)
@@ -84,7 +84,7 @@ namespace PlayerControlSystem
             }
         }
 
-        private static void ApplySetVelocity(Rigidbody2D rb,  Vector2 velocity, bool showDebug)
+        private static void ApplySetVelocity(Rigidbody2D rb, Vector2 velocity, bool showDebug)
         {
 
             rb.linearVelocity = velocity;
@@ -93,5 +93,6 @@ namespace PlayerControlSystem
                 Debug.Log($"[SetVelocity] New Velocity: {velocity}");
         }
     }
+
 }
 

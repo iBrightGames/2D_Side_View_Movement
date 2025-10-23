@@ -65,25 +65,16 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\GameFolders\Scripts\Checks\Ground.cs" />
-    <Compile Include="Assets\GameFolders\Scripts\Capabilities\Jump.cs" />
-    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\DemoSetupGenerator.cs" />
-    <Compile Include="Assets\GameFolders\Scripts\Capabilities\Move.cs" />
     <Compile Include="Assets\_StateMachine\ForceToCategoryBridge.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\InputMovementBridge.cs" />
-    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Config\MovementConfig.cs" />
-    <Compile Include="Assets\GameFolders\Scripts\Controllers\PlayerController.cs" />
     <Compile Include="Assets\_SpriteAnimation\spriteDatabaseAnimation.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Core\Enums.cs" />
-    <Compile Include="Assets\GameFolders\Scripts\Controllers\InputController.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Core\DoTMover.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\MovementExecuter.cs" />
-    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Config\CustomInputSystem.cs" />
     <Compile Include="Assets\InputSystem_Actions.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Config\MovementDataSO.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Controller\PlayerMovementController.cs" />
     <Compile Include="Assets\_StateMachine\PlayerStateController.cs" />
-    <Compile Include="Assets\GameFolders\Scripts\Controllers\AIController.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\Enums.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Controller\MovementController.cs" />
     <Compile Include="Assets\_SpriteAnimation\SpriteDatabaseEditor.cs" />

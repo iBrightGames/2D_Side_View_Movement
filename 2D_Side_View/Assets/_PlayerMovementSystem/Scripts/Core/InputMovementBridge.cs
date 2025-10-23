@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 namespace PlayerControlSystem
 {
-    [CreateAssetMenu(fileName = "ForceConfig", menuName = "Movement/ForceConfig")]
+    [CreateAssetMenu(fileName = "ForceConfig", menuName = "ForceConfig")]
     public class ForceConfig : ScriptableObject
     {
         [Header("Force Type")]
@@ -76,6 +76,7 @@ namespace PlayerControlSystem
 
 
     }
+
 }
 
 
