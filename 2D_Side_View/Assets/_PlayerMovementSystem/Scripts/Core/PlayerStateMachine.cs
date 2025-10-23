@@ -1,246 +1,250 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace PlayerControlSystem
 {
-    // public interface IPlayerSubState
-    // {
-    //     void Enter();
-    //     void Update();
-    //     void Exit();
-    //     Vector2 CalculateVelocity();
-    // }
-    public abstract class PlayerSuperState
+    public enum InputAxis { Horizontal, Vertical }
+    public enum InputPolarity { Positive, Negative }
+
+    [System.Serializable]
+    public class ForceConfig
     {
-        protected PlayerStateMachine player;
-        protected IPlayerSubState subState;
+        [Header("Force Type")]
+        public ForceType forceType;
 
-        public PlayerSuperState(PlayerStateMachine player)
+        [Header("Magnitude")]
+        public float forceMagnitude = 10f;
+
+        [Tooltip("Hangi eksen?")]
+        public InputAxis axis;
+
+        [Tooltip("Hangi yön?")]
+        public InputPolarity polarity;
+
+        public Vector2 GetLinearForceVector()
         {
-            this.player = player;
+            Vector2 dir = axis switch
+            {
+                InputAxis.Horizontal => Vector2.right,
+                InputAxis.Vertical => Vector2.up,
+                _ => Vector2.zero
+            };
+
+            float sign = polarity switch
+            {
+                InputPolarity.Positive => 1f,
+                InputPolarity.Negative => -1f,
+                _ => 0f
+            };
+
+            return dir * forceMagnitude * sign;
         }
 
-        public virtual void Enter() => subState?.Enter();
-        public virtual void Update()
+        public float GetAngularForce()
         {
-            subState?.Update();
+            switch (polarity)
+            {
+                case InputPolarity.Positive: return forceMagnitude;
+                case InputPolarity.Negative: return -forceMagnitude;
+            }
+            return 0;
         }
-        public virtual void Exit() => subState?.Exit();
+
+    }
+    [System.Serializable]
+    public class UserInput
+    {
+        public InputActionReference action;
+
+        public bool IsPressed => action != null && action.action.IsPressed();
+        public bool WasPerformedThisFrame => action != null && action.action.triggered;
+
+        public void Subscribe()
+        {
+            if (action == null) return;
+            action.action.Enable();
+        }
+
+        public void Unsubscribe()
+        {
+            if (action == null) return;
+            action.action.Disable();
+        }
     }
 
-    // -----------------------------
-    // PLAYER STATE MACHINE
-    // -----------------------------
+    [System.Serializable]
+    public class InputForceBridge
+    {
+        public UserInput playerInput;
+        public ForceConfig forceConfig;
+        public bool IsValid => playerInput != null && forceConfig != null;
+
+
+
+    }
+
+    public interface IPlayerActionState
+    {
+        void Enter();
+        void Update();
+        void Exit();
+    }
+
+    // ===================================
+    // 1. STATE MACHINE SADECE CONTEXT TUTAR
+    // ===================================
     public class PlayerStateMachine
     {
         public Rigidbody2D rb;
-        public PlayerMovementController movementController;
-
-        // Super states
-        public GroundedState GroundedState { get; private set; }
-        public AirborneState AirborneState { get; private set; }
-
-        private PlayerSuperState currentSuperState;
-
-        public PlayerStateMachine(PlayerMovementController controller)
+        public PlayerMovementController controller;
+        private PlayerEnvironmentState currentState;
+        public PlayerStateMachine(PlayerMovementController ctrl)
         {
-            movementController = controller;
-            rb = controller.rb;
+            controller = ctrl;
+            rb = ctrl.rb;
 
-            GroundedState = new GroundedState(this);
-            AirborneState = new AirborneState(this);
-
-            currentSuperState = GroundedState;
-            currentSuperState.Enter();
+            // Başlangıç state'i
+            currentState = new GroundedState(this);
+            currentState.Enter();
         }
 
         public void Update()
         {
-            // Input → state logic
-            currentSuperState.Update();
+            // State logic'i çalıştır
+            currentState.Update();
 
-            // Rigidbody velocity uygulama
-            Vector2 velocity = (currentSuperState as dynamic).subState?.CalculateVelocity() ?? Vector2.zero;
-            rb.linearVelocity = velocity;
+            // State geçişlerini kontrol et
+            CheckTransitions();
         }
 
-        public void ChangeSuperState(PlayerSuperState next)
+        public void FixedUpdate()
         {
-            if (currentSuperState == next) return;
-
-            currentSuperState.Exit();
-            currentSuperState = next;
-            currentSuperState.Enter();
+            // State hangi force'lara izin veriyorsa onları çalıştır
+            ExecuteAllowedForces();
         }
 
-        public bool IsGrounded()
+        private void CheckTransitions()
         {
-            // Basit örnek, zemine temas kontrolü
-            return movementController.IsGrounded;
-        }
-    }
-
-    // -----------------------------
-    // SUPER STATES
-    // -----------------------------
-    public class GroundedState : PlayerSuperState
-    {
-        public MoveSubState MoveSub { get; private set; }
-        public IdleSubState IdleSub { get; private set; }
-
-        public GroundedState(PlayerStateMachine player) : base(player)
-        {
-            MoveSub = new MoveSubState(player, this);
-            IdleSub = new IdleSubState(player, this);
-            subState = IdleSub;
-        }
-
-        public override void Update()
-        {
-            // Alt state seçimi
-            Vector2 moveInput = player.movementController.GetHorizontalInput();
-            if (moveInput.sqrMagnitude > 0.01f)
-                subState = MoveSub;
-            else
-                subState = IdleSub;
-
-            // Zıplama tetik kontrolü
-            if (player.movementController.JumpTriggered)
-                player.ChangeSuperState(player.AirborneState);
-
-            base.Update();
-        }
-    }
-
-    public class AirborneState : PlayerSuperState
-    {
-        public JumpSubState JumpSub { get; private set; }
-        public FallSubState FallSub { get; private set; }
-
-        public AirborneState(PlayerStateMachine player) : base(player)
-        {
-            JumpSub = new JumpSubState(player, this);
-            FallSub = new FallSubState(player, this);
-            subState = JumpSub;
-        }
-
-        public override void Update()
-        {
-            // Hız kontrolü vs
-            if (player.rb.linearVelocity.y < 0)
-                subState = FallSub;
-
-            if (player.IsGrounded())
-                player.ChangeSuperState(player.GroundedState);
-
-            base.Update();
-        }
-    }
-
-    // -----------------------------
-    // SUB STATES
-    // -----------------------------
-    public class IdleSubState : IPlayerSubState
-    {
-        private PlayerStateMachine player;
-        private GroundedState parent;
-
-        public IdleSubState(PlayerStateMachine player, GroundedState parent)
-        {
-            this.player = player;
-            this.parent = parent;
-        }
-
-        public void Enter() { }
-        public void Update() { }
-        public void Exit() { }
-
-        public Vector2 CalculateVelocity() => Vector2.zero;
-    }
-
-    public class MoveSubState : IPlayerSubState
-    {
-        private PlayerStateMachine player;
-        private GroundedState parent;
-
-        public MoveSubState(PlayerStateMachine player, GroundedState parent)
-        {
-            this.player = player;
-            this.parent = parent;
-        }
-
-        public void Enter() { }
-        public void Update() { }
-        public void Exit() { }
-
-        public Vector2 CalculateVelocity()
-        {
-            Vector2 total = Vector2.zero;
-            foreach (var bridge in player.movementController.activeBridges)
+            PlayerEnvironmentState nextState = currentState.CheckTransition();
+            if (nextState != null && nextState != currentState)
             {
-                total += bridge.CalculateVelocity(bridge.playerInput);
+                currentState.Exit();
+                currentState = nextState;
+                currentState.Enter();
             }
-            return total;
+        }
+
+        private void ExecuteAllowedForces()
+        {
+            // Aktif inputlardaki force'ları kontrol et
+            foreach (var bridge in controller.activeBridges)
+            {
+                // State bu force'a izin veriyor mu?
+                if (currentState.IsForceAllowed(bridge))
+                {
+                    MovementExecuter.ExecuteMovement(rb, bridge, controller.showDebugLogs);
+                }
+            }
+        }
+
+        public void ChangeState(PlayerEnvironmentState newState)
+        {
+            currentState?.Exit();
+            currentState = newState;
+            currentState.Enter();
         }
     }
 
-    public class JumpSubState : IPlayerSubState
+    // ===================================
+    // 2. STATE'LER SADECE KURALLAR İÇERİR
+    // ===================================
+    public abstract class PlayerEnvironmentState
     {
-        private PlayerStateMachine player;
-        private AirborneState parent;
-
-        public JumpSubState(PlayerStateMachine player, AirborneState parent)
+        protected PlayerStateMachine player;
+        
+        public PlayerEnvironmentState(PlayerStateMachine player)
         {
             this.player = player;
-            this.parent = parent;
         }
-
-        public void Enter()
-        {
-            // Jump velocity
-            player.rb.linearVelocity = new Vector2(player.rb.linearVelocity.x, player.movementController.JumpForce);
-        }
-
-        public void Update() { }
-        public void Exit() { }
-
-        public Vector2 CalculateVelocity()
-        {
-            Vector2 total = Vector2.zero;
-            foreach (var bridge in player.movementController.activeBridges)
-            {
-                total += bridge.CalculateVelocity(bridge.playerInput);
-            }
-            total.y = player.rb.linearVelocity.y;
-            return total;
-        }
+        
+        public virtual void Enter() { }
+        public virtual void Update() { }
+        public virtual void Exit() { }
+        
+        // Bu state'te hangi force'lara izin var?
+        public abstract bool IsForceAllowed(InputForceBridge bridge);
+        
+        // State geçişi gerekli mi?
+        public abstract PlayerEnvironmentState CheckTransition();
     }
 
-    public class FallSubState : IPlayerSubState
+    // ===================================
+    // 3. GROUNDED STATE
+    // ===================================
+    public class GroundedState : PlayerEnvironmentState
     {
-        private PlayerStateMachine player;
-        private AirborneState parent;
-
-        public FallSubState(PlayerStateMachine player, AirborneState parent)
+        public GroundedState(PlayerStateMachine player) : base(player) { }
+        
+        public override void Enter()
         {
-            this.player = player;
-            this.parent = parent;
+            Debug.Log("[State] Entered Grounded");
         }
-
-        public void Enter() { }
-        public void Update() { }
-        public void Exit() { }
-
-        public Vector2 CalculateVelocity()
+        
+        public override bool IsForceAllowed(InputForceBridge bridge)
         {
-            Vector2 total = Vector2.zero;
-            foreach (var bridge in player.movementController.activeBridges)
+            // Yerdeyken tüm force'lara izin ver
+            return true;
+            
+            // VEYA daha spesifik:
+            // return bridge.forceConfig.forceType != ForceType.AddImpulse; // Impulse sadece havada
+        }
+        
+        public override PlayerEnvironmentState CheckTransition()
+        {
+            // Yerden ayrıldı mı?
+            if (player.rb.linearVelocity.y > 0.1f)
             {
-                total += bridge.CalculateVelocity(bridge.playerInput);
+                return new AirborneState(player);
             }
-            total.y = player.rb.linearVelocity.y;
-            return total;
+            return null;
         }
     }
+
+
+    // ===================================
+    // 4. AIRBORNE STATE
+    // ===================================
+    public class AirborneState : PlayerEnvironmentState
+    {
+        public AirborneState(PlayerStateMachine player) : base(player) { }
+
+        public override void Enter()
+        {
+            Debug.Log("[State] Entered Airborne");
+        }
+
+        public override bool IsForceAllowed(InputForceBridge bridge)
+        {
+            // Havada sadece horizontal movement'e izin ver
+            if (bridge.forceConfig.axis == InputAxis.Horizontal)
+                return true;
+
+            // Jump'a izin verme (zaten havadayız)
+            if (bridge.forceConfig.axis == InputAxis.Vertical &&
+                bridge.forceConfig.polarity == InputPolarity.Positive)
+                return false;
+
+            return true;
+        }
+
+        public override PlayerEnvironmentState CheckTransition()
+        {
+            return new GroundedState(player);
+        }
+    }
+
+
+
 }
 
