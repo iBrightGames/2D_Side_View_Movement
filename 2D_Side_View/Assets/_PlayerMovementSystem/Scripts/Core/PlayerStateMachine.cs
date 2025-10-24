@@ -1,250 +1,148 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace PlayerControlSystem
 {
-    public enum InputAxis { Horizontal, Vertical }
-    public enum InputPolarity { Positive, Negative }
-
-    [System.Serializable]
-    public class ForceConfig
-    {
-        [Header("Force Type")]
-        public ForceType forceType;
-
-        [Header("Magnitude")]
-        public float forceMagnitude = 10f;
-
-        [Tooltip("Hangi eksen?")]
-        public InputAxis axis;
-
-        [Tooltip("Hangi yön?")]
-        public InputPolarity polarity;
-
-        public Vector2 GetLinearForceVector()
-        {
-            Vector2 dir = axis switch
-            {
-                InputAxis.Horizontal => Vector2.right,
-                InputAxis.Vertical => Vector2.up,
-                _ => Vector2.zero
-            };
-
-            float sign = polarity switch
-            {
-                InputPolarity.Positive => 1f,
-                InputPolarity.Negative => -1f,
-                _ => 0f
-            };
-
-            return dir * forceMagnitude * sign;
-        }
-
-        public float GetAngularForce()
-        {
-            switch (polarity)
-            {
-                case InputPolarity.Positive: return forceMagnitude;
-                case InputPolarity.Negative: return -forceMagnitude;
-            }
-            return 0;
-        }
-
-    }
-    [System.Serializable]
-    public class UserInput
-    {
-        public InputActionReference action;
-
-        public bool IsPressed => action != null && action.action.IsPressed();
-        public bool WasPerformedThisFrame => action != null && action.action.triggered;
-
-        public void Subscribe()
-        {
-            if (action == null) return;
-            action.action.Enable();
-        }
-
-        public void Unsubscribe()
-        {
-            if (action == null) return;
-            action.action.Disable();
-        }
-    }
-
-    [System.Serializable]
-    public class InputForceBridge
-    {
-        public UserInput playerInput;
-        public ForceConfig forceConfig;
-        public bool IsValid => playerInput != null && forceConfig != null;
-
-
-
-    }
-
-    public interface IPlayerActionState
-    {
-        void Enter();
-        void Update();
-        void Exit();
-    }
-
-    // ===================================
-    // 1. STATE MACHINE SADECE CONTEXT TUTAR
-    // ===================================
     public class PlayerStateMachine
     {
         public Rigidbody2D rb;
         public PlayerMovementController controller;
-        private PlayerEnvironmentState currentState;
+
+        private PlayerActionState currentState;
+        public event Action<PlayerActionState> OnStateChanged;
+        private readonly Dictionary<Type, PlayerActionState> availableStates;
+
         public PlayerStateMachine(PlayerMovementController ctrl)
         {
             controller = ctrl;
             rb = ctrl.rb;
+            
+            // State Havuzu (Pooling)
+            availableStates = new Dictionary<Type, PlayerActionState>
+            {
+                { typeof(IdleState), new IdleState(this) },
+                { typeof(WalkState), new WalkState(this) },
+                { typeof(JumpState), new JumpState(this) },
+                { typeof(SwimState), new SwimState(this) }
+            };
 
-            // Başlangıç state'i
-            currentState = new GroundedState(this);
-            currentState.Enter();
+            // Başlangıç State'i
+            currentState = availableStates[typeof(IdleState)];
+        }
+        public virtual void Enter()
+        {
+            controller.OnCollided += HandleEnvironmentChanged;
         }
 
+        public virtual void Exit()
+        {
+            controller.OnCollided -= HandleEnvironmentChanged;
+        }
+
+
+        protected virtual void HandleEnvironmentChanged(String env)
+        {
+            if (env != EnvironmentType.Water.ToString())
+            currentState= new SwimState(this);
+        }
+        private PlayerActionState DetermineState()
+        {
+
+            if (Mathf.Abs(rb.linearVelocityY) > 0.01f)
+                return new JumpState(this);
+            else if (Mathf.Abs(rb.linearVelocityX) > 0.01f)
+                return new WalkState(this);
+            else
+                return new IdleState(this);
+        }
+
+        private void ChangeState(PlayerActionState newState)
+        {
+            currentState.Exit();
+            currentState = newState;
+            currentState.Enter();
+
+            OnStateChanged?.Invoke(currentState);
+            Debug.Log($"new state {newState}");
+        }
         public void Update()
         {
-            // State logic'i çalıştır
+            PlayerActionState nextState = DetermineState();
+
+            if (nextState != null && nextState.GetType() != currentState.GetType())
+                ChangeState(nextState);
+
             currentState.Update();
-
-            // State geçişlerini kontrol et
-            CheckTransitions();
-        }
-
-        public void FixedUpdate()
-        {
-            // State hangi force'lara izin veriyorsa onları çalıştır
-            ExecuteAllowedForces();
-        }
-
-        private void CheckTransitions()
-        {
-            PlayerEnvironmentState nextState = currentState.CheckTransition();
-            if (nextState != null && nextState != currentState)
+            if (nextState.GetType() != currentState.GetType())
             {
                 currentState.Exit();
                 currentState = nextState;
                 currentState.Enter();
             }
-        }
 
-        private void ExecuteAllowedForces()
-        {
-            // Aktif inputlardaki force'ları kontrol et
-            foreach (var bridge in controller.activeBridges)
-            {
-                // State bu force'a izin veriyor mu?
-                if (currentState.IsForceAllowed(bridge))
-                {
-                    MovementExecuter.ExecuteMovement(rb, bridge, controller.showDebugLogs);
-                }
-            }
-        }
-
-        public void ChangeState(PlayerEnvironmentState newState)
-        {
-            currentState?.Exit();
-            currentState = newState;
-            currentState.Enter();
+            currentState.Update();
         }
     }
 
-    // ===================================
-    // 2. STATE'LER SADECE KURALLAR İÇERİR
-    // ===================================
-    public abstract class PlayerEnvironmentState
+
+    public abstract class PlayerActionState
     {
-        protected PlayerStateMachine player;
-        
-        public PlayerEnvironmentState(PlayerStateMachine player)
+        protected PlayerStateMachine stateMachine;
+
+        public PlayerActionState(PlayerStateMachine machine)
         {
-            this.player = player;
+            stateMachine = machine;
         }
-        
-        public virtual void Enter() { }
+
+        public virtual void Enter()
+        {
+            // Ortam değişikliklerini dinle
+            stateMachine.controller.OnCollided += HandleEnvironmentChanged;
+        }
+
+        public virtual void Exit()
+        {
+            stateMachine.controller.OnCollided -= HandleEnvironmentChanged;
+        }
+
         public virtual void Update() { }
-        public virtual void Exit() { }
-        
-        // Bu state'te hangi force'lara izin var?
-        public abstract bool IsForceAllowed(InputForceBridge bridge);
-        
-        // State geçişi gerekli mi?
-        public abstract PlayerEnvironmentState CheckTransition();
+
+        // Ortam değiştiğinde ne olacağı
+        protected virtual void HandleEnvironmentChanged(String env) { }
+
+        // İsteğe bağlı: state geçişi belirlemek için
+        public virtual PlayerActionState DetermineNextState() { return this; }
     }
 
-    // ===================================
-    // 3. GROUNDED STATE
-    // ===================================
-    public class GroundedState : PlayerEnvironmentState
+
+    public class IdleState : PlayerActionState
     {
-        public GroundedState(PlayerStateMachine player) : base(player) { }
-        
-        public override void Enter()
+        public IdleState(PlayerStateMachine machine) : base(machine)
         {
-            Debug.Log("[State] Entered Grounded");
-        }
-        
-        public override bool IsForceAllowed(InputForceBridge bridge)
-        {
-            // Yerdeyken tüm force'lara izin ver
-            return true;
-            
-            // VEYA daha spesifik:
-            // return bridge.forceConfig.forceType != ForceType.AddImpulse; // Impulse sadece havada
-        }
-        
-        public override PlayerEnvironmentState CheckTransition()
-        {
-            // Yerden ayrıldı mı?
-            if (player.rb.linearVelocity.y > 0.1f)
-            {
-                return new AirborneState(player);
-            }
-            return null;
         }
     }
-
-
-    // ===================================
-    // 4. AIRBORNE STATE
-    // ===================================
-    public class AirborneState : PlayerEnvironmentState
+    public class JumpState : PlayerActionState
     {
-        public AirborneState(PlayerStateMachine player) : base(player) { }
+        public JumpState(PlayerStateMachine machine) : base(machine) { }
 
-        public override void Enter()
+    }
+    public class WalkState : PlayerActionState
+    {
+        public WalkState(PlayerStateMachine machine) : base(machine) { }
+
+    }
+    public class SwimState : PlayerActionState
+    {
+        public SwimState(PlayerStateMachine machine) : base(machine) { }
+
+        protected override void HandleEnvironmentChanged(string env)
         {
-            Debug.Log("[State] Entered Airborne");
-        }
-
-        public override bool IsForceAllowed(InputForceBridge bridge)
-        {
-            // Havada sadece horizontal movement'e izin ver
-            if (bridge.forceConfig.axis == InputAxis.Horizontal)
-                return true;
-
-            // Jump'a izin verme (zaten havadayız)
-            if (bridge.forceConfig.axis == InputAxis.Vertical &&
-                bridge.forceConfig.polarity == InputPolarity.Positive)
-                return false;
-
-            return true;
-        }
-
-        public override PlayerEnvironmentState CheckTransition()
-        {
-            return new GroundedState(player);
         }
     }
 
+    public enum EnvironmentType
+    { Water, Land }
 
 
 }
-

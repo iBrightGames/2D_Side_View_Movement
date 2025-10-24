@@ -267,8 +267,8 @@
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Drawing\Inspector\PropertyDrawers\ColorPropertyDrawer.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Generation\Collections\PassCollection.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Nodes\Math\Interpolation\LerpNode.cs" />
-    <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Nodes\UV\TriplanarNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Nodes\UV\ParallaxMappingNode.cs" />
+    <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Nodes\UV\TriplanarNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Util\KeywordCollector.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Drawing\Views\IShaderNodeView.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@911117698220\Editor\Data\Interfaces\IGeneratesFunction.cs" />

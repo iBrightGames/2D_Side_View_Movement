@@ -65,8 +65,10 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\Config\MovementSettings.cs" />
     <Compile Include="Assets\_SpriteAnimation\spriteDatabaseAnimation.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Core\Enums.cs" />
+    <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\Input\UserInput.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\PlayerStateMachine.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Core\DoTMover.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\MovementExecuter.cs" />

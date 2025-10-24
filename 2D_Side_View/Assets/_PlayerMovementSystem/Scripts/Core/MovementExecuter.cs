@@ -106,7 +106,6 @@ namespace PlayerControlSystem
                 Debug.Log($"[SetVelocity] New Velocity: {velocity}");
         }
 
-        // === Yeni Eklenenler ===
 
         private static void ApplyMovePosition(Rigidbody2D rb, Vector2 velocity, bool showDebug)
         {
@@ -141,5 +140,4 @@ namespace PlayerControlSystem
 
 }
     
-
 
