@@ -264,6 +264,7 @@ GameObject:
   - component: {fileID: 126414306}
   - component: {fileID: 126414305}
   - component: {fileID: 126414304}
+  - component: {fileID: 126414307}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -338,13 +339,57 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126414303}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.3, y: -0.43, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1700566235}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &126414307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126414303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &128264825
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,7 +1098,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.83192086, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1072,8 +1117,8 @@ Transform:
   m_GameObject: {fileID: 368790542}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.2, y: -4.9, z: 0}
-  m_LocalScale: {x: 22.19823, y: 1.6124066, z: 1}
+  m_LocalPosition: {x: 3.0355, y: -6.8325, z: 0}
+  m_LocalScale: {x: 21.869698, y: 5.4773455, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2546,7 +2591,7 @@ GameObject:
   - component: {fileID: 1268857618}
   - component: {fileID: 1268857617}
   m_Layer: 0
-  m_Name: ground (3)
+  m_Name: Land
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2662,8 +2707,8 @@ Transform:
   m_GameObject: {fileID: 1268857616}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.1959, y: -4.2072, z: 0}
-  m_LocalScale: {x: 22.478912, y: 1.3344423, z: 1}
+  m_LocalPosition: {x: -17.9771, y: -6.7975, z: 0}
+  m_LocalScale: {x: 20.916628, y: 6.515147, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2680,7 +2725,7 @@ GameObject:
   - component: {fileID: 1308697364}
   - component: {fileID: 1308697363}
   m_Layer: 0
-  m_Name: ground
+  m_Name: Land
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2796,8 +2841,8 @@ Transform:
   m_GameObject: {fileID: 1308697362}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.4849, y: -4.3462, z: 0}
-  m_LocalScale: {x: 22.19823, y: 1.6124066, z: 1}
+  m_LocalPosition: {x: 21.4027, y: -6.8543, z: 0}
+  m_LocalScale: {x: 22.033964, y: 6.6286035, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3079,6 +3124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1700566235}
+  - component: {fileID: 1700566240}
   - component: {fileID: 1700566232}
   - component: {fileID: 1700566237}
   - component: {fileID: 1700566234}
@@ -3220,10 +3266,11 @@ Transform:
   m_GameObject: {fileID: 1700566231}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -11.8, y: -1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 126414306}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &1700566236
@@ -3309,6 +3356,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Library: []
   m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 0b261661a7dab87488d4b86a27307bfe, type: 3}
+--- !u!114 &1700566240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700566231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03d620317e5f02b478eb28ba4f860382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementController: {fileID: 1700566232}
+  spriteAnimator: {fileID: 1700566237}
+  stateMappings:
+  - stateName: WalkState
+    animationCategory: walk
+  - stateName: IdleState
+    animationCategory: Idle
+  - stateName: SwimState
+    animationCategory: slide
+  - stateName: JumpState
+    animationCategory: Idle
 --- !u!1 &1858031228
 GameObject:
   m_ObjectHideFlags: 0
@@ -3321,7 +3391,7 @@ GameObject:
   - component: {fileID: 1858031230}
   - component: {fileID: 1858031229}
   m_Layer: 0
-  m_Name: ground (1)
+  m_Name: Land
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3715,7 +3785,6 @@ SpriteRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 126414306}
   - {fileID: 931554954}
   - {fileID: 526099525}
   - {fileID: 876996801}

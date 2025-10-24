@@ -14,12 +14,14 @@ namespace PlayerControlSystem
         public Rigidbody2D rb;
         public List<InputForceBridge> inputMovementBridges;
 
-        private PlayerStateMachine stateMachine;
+        public PlayerStateMachine stateMachine;
 
         // bridge tiplerine göre ayrılmış listeler
         private List<InputForceBridge> holdBridges = new();
         private List<InputForceBridge> triggerBridges = new();
         private HashSet<InputForceBridge> activeHoldBridges = new();
+
+        public event Action<string> OnCollided;
 
         private void Awake()
         {
@@ -52,6 +54,7 @@ namespace PlayerControlSystem
             }
 
             stateMachine = new PlayerStateMachine(this);
+            // stateMachine.Enter();
         }
 
         private void FixedUpdate()
@@ -59,6 +62,7 @@ namespace PlayerControlSystem
             // basılı tuşlar için sürekli kuvvet uygula
             foreach (var bridge in activeHoldBridges)
                 ApplyForce(bridge);
+            stateMachine.Update();
         }
 
         private void ApplyForce(InputForceBridge bridge)
@@ -91,7 +95,6 @@ namespace PlayerControlSystem
             activeHoldBridges.Clear();
         }
 
-        public event Action<string> OnCollided;
 
         public void OnCollisionEnter2D(Collision2D other)
         {

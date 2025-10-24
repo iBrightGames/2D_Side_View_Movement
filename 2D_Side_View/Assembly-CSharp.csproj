@@ -70,6 +70,7 @@
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Core\Enums.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\Input\UserInput.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\PlayerStateMachine.cs" />
+    <Compile Include="Assets\_PlayerMovementSystem\AnimationStateObserver.cs" />
     <Compile Include="Assets\_ObjectMovementSystem\Scripts\Core\DoTMover.cs" />
     <Compile Include="Assets\_PlayerMovementSystem\Scripts\Core\MovementExecuter.cs" />
     <Compile Include="Assets\InputSystem_Actions.cs" />
